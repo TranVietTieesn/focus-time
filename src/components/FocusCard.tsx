@@ -57,10 +57,17 @@ export function FocusCard() {
         )}
       </div>
 
-      {/* Timer Display */}
+      {/* Timer Display - VTea UI Makeover */}
       <div className="text-center mb-6 md:mb-8">
         <div
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold font-display tabular-nums"
+          className="text-timer-mobile md:text-timer-desktop font-bold tabular-nums"
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            fontWeight: 700,
+            lineHeight: 1.0,
+            letterSpacing: '-0.02em',
+            textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+          }}
           role="timer"
           aria-live="polite"
           aria-atomic="true"

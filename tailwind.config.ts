@@ -18,10 +18,20 @@ export default {
           dark: '#FF6BA3',
           light: '#FFA8CC',
         },
+        success: {
+          DEFAULT: '#10B981',
+        },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         display: ['Poppins', 'Inter', 'sans-serif'],
+      },
+      fontSize: {
+        'timer-mobile': '90px',
+        'timer-desktop': '120px',
+      },
+      backdropBlur: {
+        'vtea': '16px',
       },
     },
   },

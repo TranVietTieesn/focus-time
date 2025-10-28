@@ -29,9 +29,14 @@ export function TopBar({ onSettingsClick, onTasksClick }: TopBarProps) {
               </svg>
             </button>
 
-            <h1 className="text-xl md:text-2xl font-bold font-display text-white">
-              Focus Timer Hub
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl md:text-2xl font-semibold text-white/90">
+                VTea
+              </h1>
+              <span className="hidden sm:inline text-xs text-white/70">
+                focus & chill
+              </span>
+            </div>
           </div>
           
           <div className="flex items-center gap-2">

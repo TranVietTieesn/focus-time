@@ -1,6 +1,7 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { useStore } from './store';
 import { BackgroundLayer } from './components/BackgroundLayer';
+import { InspirationalQuote } from './components/InspirationalQuote';
 import { TopBar } from './components/TopBar';
 import { FocusCard } from './components/FocusCard';
 import { DailyBar } from './components/DailyBar';
@@ -99,6 +100,7 @@ function App() {
       </a>
 
       <BackgroundLayer />
+      <InspirationalQuote />
       <TopBar
         onSettingsClick={() => setIsSettingsOpen(true)}
         onTasksClick={() => setIsTaskDrawerOpen(!isTaskDrawerOpen)}
