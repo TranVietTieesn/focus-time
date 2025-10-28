@@ -7,7 +7,7 @@
  * @see data-model.md for detailed specifications
  */
 
-import type { Task, TaskCreateInput, TaskUpdateInput } from './types';
+import type { Task, TaskUpdateInput } from './types';
 
 /**
  * Tasks slice state and actions

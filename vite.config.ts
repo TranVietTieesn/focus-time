@@ -9,38 +9,43 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      manifest: {
-        name: 'Focus Timer Hub',
-        short_name: 'Focus Timer',
-        description: 'Distraction-free Pomodoro timer for deep focus',
-        theme_color: '#4B6BFB',
-        background_color: '#0F172A',
-        display: 'standalone',
-        icons: [
-          {
-            src: 'icon-192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'icon-512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      },
+      includeAssets: ['favicon.ico', 'icon-192.svg', 'icon-512.svg'],
+      manifest: false, // Use external manifest.webmanifest
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,svg,woff2}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com/,
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'google-fonts-stylesheets'
+              cacheName: 'google-fonts-stylesheets',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-webfonts',
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+              expiration: {
+                maxEntries: 30,
+                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+              }
             }
           }
-        ]
+        ],
+        navigateFallback: null, // No fallback needed for SPA
+        cleanupOutdatedCaches: true
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module'
       }
     })
   ],

@@ -44,23 +44,23 @@ export function FocusCard() {
   };
 
   return (
-    <div className="w-full max-w-2xl glass-panel rounded-3xl p-8 md:p-12">
+    <div className="w-full max-w-2xl glass-panel rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
       {/* Session Type Label */}
-      <div className="text-center mb-6">
-        <p className={`text-lg uppercase tracking-wide ${getSessionColor()}`}>
+      <div className="text-center mb-4 md:mb-6">
+        <p className={`text-base md:text-lg uppercase tracking-wide ${getSessionColor()}`}>
           {getSessionTypeLabel()}
         </p>
         {status !== 'idle' && (
-          <p className="text-sm text-white/60 mt-2">
+          <p className="text-xs md:text-sm text-white/60 mt-2">
             Session {currentSessionIndex} of {sessionsBeforeLongBreak}
           </p>
         )}
       </div>
 
       {/* Timer Display */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-6 md:mb-8">
         <div
-          className="text-6xl md:text-8xl font-bold font-display tabular-nums"
+          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold font-display tabular-nums"
           role="timer"
           aria-live="polite"
           aria-atomic="true"
@@ -75,21 +75,24 @@ export function FocusCard() {
           <>
             <button
               onClick={handleStart}
-              className="w-full py-4 px-6 bg-primary hover:bg-primary-dark rounded-xl font-semibold text-lg transition-colors focus-ring"
+              className="w-full min-h-[44px] py-4 px-6 bg-primary hover:bg-primary-dark active:bg-primary-dark rounded-xl font-semibold text-base md:text-lg transition-colors focus-ring touch-manipulation"
+              aria-label="Start 25-minute focus session"
             >
               Start Focus Session
             </button>
             
-            <div className="flex gap-3">
+            <div className="flex gap-2 md:gap-3">
               <button
                 onClick={() => handleStartBreak('shortBreak')}
-                className="flex-1 py-3 px-4 bg-white/10 hover:bg-white/20 rounded-xl font-medium transition-colors focus-ring"
+                className="flex-1 min-h-[44px] py-3 px-3 md:px-4 bg-white/10 hover:bg-white/20 active:bg-white/20 rounded-xl font-medium text-sm md:text-base transition-colors focus-ring touch-manipulation"
+                aria-label={`Start ${shortBreakMin} minute short break`}
               >
                 Short Break ({shortBreakMin}m)
               </button>
               <button
                 onClick={() => handleStartBreak('longBreak')}
-                className="flex-1 py-3 px-4 bg-white/10 hover:bg-white/20 rounded-xl font-medium transition-colors focus-ring"
+                className="flex-1 min-h-[44px] py-3 px-3 md:px-4 bg-white/10 hover:bg-white/20 active:bg-white/20 rounded-xl font-medium text-sm md:text-base transition-colors focus-ring touch-manipulation"
+                aria-label={`Start ${longBreakMin} minute long break`}
               >
                 Long Break ({longBreakMin}m)
               </button>
@@ -98,16 +101,18 @@ export function FocusCard() {
         )}
 
         {status === 'running' && (
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3">
             <button
               onClick={pause}
-              className="flex-1 py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl font-semibold transition-colors focus-ring"
+              className="flex-1 min-h-[44px] py-4 px-4 md:px-6 bg-white/10 hover:bg-white/20 active:bg-white/20 rounded-xl font-semibold text-base md:text-lg transition-colors focus-ring touch-manipulation"
+              aria-label="Pause timer"
             >
               Pause
             </button>
             <button
               onClick={complete}
-              className="flex-1 py-4 px-6 bg-secondary hover:bg-secondary-dark rounded-xl font-semibold transition-colors focus-ring"
+              className="flex-1 min-h-[44px] py-4 px-4 md:px-6 bg-secondary hover:bg-secondary-dark active:bg-secondary-dark rounded-xl font-semibold text-base md:text-lg transition-colors focus-ring touch-manipulation"
+              aria-label="Complete session early"
             >
               Complete
             </button>
@@ -115,16 +120,18 @@ export function FocusCard() {
         )}
 
         {status === 'paused' && (
-          <div className="flex gap-3">
+          <div className="flex gap-2 md:gap-3">
             <button
               onClick={resume}
-              className="flex-1 py-4 px-6 bg-primary hover:bg-primary-dark rounded-xl font-semibold transition-colors focus-ring"
+              className="flex-1 min-h-[44px] py-4 px-4 md:px-6 bg-primary hover:bg-primary-dark active:bg-primary-dark rounded-xl font-semibold text-base md:text-lg transition-colors focus-ring touch-manipulation"
+              aria-label="Resume timer"
             >
               Resume
             </button>
             <button
               onClick={complete}
-              className="flex-1 py-4 px-6 bg-white/10 hover:bg-white/20 rounded-xl font-medium transition-colors focus-ring"
+              className="flex-1 min-h-[44px] py-4 px-4 md:px-6 bg-white/10 hover:bg-white/20 active:bg-white/20 rounded-xl font-medium text-base md:text-lg transition-colors focus-ring touch-manipulation"
+              aria-label="Complete session"
             >
               Complete
             </button>

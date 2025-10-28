@@ -15,7 +15,7 @@ export function TaskItem({ task }: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  const complete = useStore((state) => state.complete);
+  const completeTask = useStore((state) => state.completeTask);
   const remove = useStore((state) => state.remove);
   const setActive = useStore((state) => state.setActive);
   const activeTaskId = useStore((state) => state.activeTaskId);
@@ -24,7 +24,7 @@ export function TaskItem({ task }: TaskItemProps) {
 
   const handleToggleComplete = () => {
     if (!task.isCompleted) {
-      complete(task.id);
+      completeTask(task.id);
     }
   };
 

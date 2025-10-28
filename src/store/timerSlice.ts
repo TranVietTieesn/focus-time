@@ -4,12 +4,12 @@
 
 import type { StateCreator } from 'zustand';
 import type { SessionType, TimerStatus } from '@/types';
-import { now, getRemainingSeconds, minutesToSeconds } from '@/lib/time';
+import { now, getRemainingSeconds } from '@/lib/time';
 
 // Forward declaration for store type
 type Store = ReturnType<typeof createTimerSlice> & {
   sessionsBeforeLongBreak: number;
-  addCompletedSession: (session: any) => void;
+  addCompletedSession: (session: { type: SessionType; duration: number; taskId: string | null; wasCompleted: boolean }) => void;
 };
 
 export interface TimerSlice {
@@ -29,6 +29,8 @@ export interface TimerSlice {
   complete: () => void;
   tick: () => void;
   reset: () => void;
+  restoreSession: () => boolean;
+  clearSnapshot: () => void;
 }
 
 export const createTimerSlice: StateCreator<TimerSlice, [], [], TimerSlice> = (set, get) => {
@@ -73,6 +75,22 @@ export const createTimerSlice: StateCreator<TimerSlice, [], [], TimerSlice> = (s
         status: 'paused',
         remainingSec: Math.ceil(remaining),
       });
+
+      // Save snapshot to localStorage
+      try {
+        const snapshot = {
+          status: 'paused',
+          type: state.type,
+          remainingSec: Math.ceil(remaining),
+          initialDuration: state.initialDuration,
+          currentSessionIndex: state.currentSessionIndex,
+          activeTaskId: state.activeTaskId,
+          snapshotTime: now(),
+        };
+        localStorage.setItem('FT_SESSIONS_LATEST_v1', JSON.stringify(snapshot));
+      } catch (error) {
+        console.error('Failed to save session snapshot:', error);
+      }
     },
 
     resume: () => {
@@ -133,7 +151,7 @@ export const createTimerSlice: StateCreator<TimerSlice, [], [], TimerSlice> = (s
         nextSessionIndex = state.currentSessionIndex + 1;
         
         // Check if we should trigger long break
-        const sessionsBeforeLongBreak = (store as any).sessionsBeforeLongBreak || 4;
+        const sessionsBeforeLongBreak = (store as Store).sessionsBeforeLongBreak || 4;
         if (state.currentSessionIndex >= sessionsBeforeLongBreak) {
           autoStartType = 'longBreak';
           nextSessionIndex = 1; // Reset counter after long break
@@ -169,6 +187,48 @@ export const createTimerSlice: StateCreator<TimerSlice, [], [], TimerSlice> = (s
         startTime: null,
         activeTaskId: null,
       });
+      get().clearSnapshot();
+    },
+
+    restoreSession: () => {
+      try {
+        const snapshotJson = localStorage.getItem('FT_SESSIONS_LATEST_v1');
+        if (!snapshotJson) return false;
+
+        const snapshot = JSON.parse(snapshotJson);
+        
+        // Only restore if snapshot is recent (within last 24 hours)
+        const age = now() - snapshot.snapshotTime;
+        if (age > 24 * 60 * 60 * 1000) {
+          get().clearSnapshot();
+          return false;
+        }
+
+        // Restore the session state
+        set({
+          status: snapshot.status,
+          type: snapshot.type,
+          remainingSec: snapshot.remainingSec,
+          initialDuration: snapshot.initialDuration,
+          currentSessionIndex: snapshot.currentSessionIndex,
+          activeTaskId: snapshot.activeTaskId,
+          startTime: null, // Will be set on resume
+        });
+
+        return true;
+      } catch (error) {
+        console.error('Failed to restore session:', error);
+        get().clearSnapshot();
+        return false;
+      }
+    },
+
+    clearSnapshot: () => {
+      try {
+        localStorage.removeItem('FT_SESSIONS_LATEST_v1');
+      } catch (error) {
+        console.error('Failed to clear session snapshot:', error);
+      }
     },
   };
 };

@@ -17,7 +17,7 @@ export interface TasksSlice {
   // Actions
   create: (title: string, estimatedSessions?: number | null) => Task;
   update: (id: string, updates: TaskUpdateInput) => void;
-  complete: (id: string) => void;
+  completeTask: (id: string) => void;
   remove: (id: string) => void;
   setActive: (id: string | null) => void;
   getTasks: () => Task[];
@@ -85,7 +85,7 @@ export const createTasksSlice: StateCreator<TasksSlice> = (set, get) => {
       persistTasks();
     },
 
-    complete: (id) => {
+    completeTask: (id) => {
       const task = get().tasks.find((t) => t.id === id);
       if (!task) {
         throw new Error(`Task not found: ${id}`);

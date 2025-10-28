@@ -2,8 +2,6 @@
  * Task Drawer - Slide-in panel for task management
  */
 
-import { useState } from 'react';
-import { useStore } from '@/store';
 import { TaskList } from './TaskList';
 import { TaskCreateForm } from './TaskCreateForm';
 
