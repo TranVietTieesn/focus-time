@@ -1,12 +1,15 @@
 /**
  * Task List - Displays all tasks with empty state
+ * VTea UI Makeover: Added "Hide Completed" filter
  */
 
+import { useState } from 'react';
 import { useStore } from '@/store';
 import { TaskItem } from './TaskItem';
 
 export function TaskList() {
   const tasks = useStore((state) => state.tasks);
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   if (tasks.length === 0) {
     return (
@@ -36,6 +39,18 @@ export function TaskList() {
 
   return (
     <div className="space-y-4">
+      {/* Hide Completed Filter - VTea UI Makeover */}
+      {completedTasks.length > 0 && (
+        <label className="flex items-center gap-2 text-sm text-white/70 hover:text-white/90 cursor-pointer transition-colors">
+          <input
+            type="checkbox"
+            checked={hideCompleted}
+            onChange={(e) => setHideCompleted(e.target.checked)}
+            className="w-4 h-4 rounded border-white/30 bg-white/10 text-primary focus:ring-2 focus:ring-primary focus:ring-offset-0"
+          />
+          Hide completed
+        </label>
+      )}
       {/* Active Tasks */}
       {activeTasks.length > 0 && (
         <div>
@@ -51,7 +66,7 @@ export function TaskList() {
       )}
 
       {/* Completed Tasks */}
-      {completedTasks.length > 0 && (
+      {completedTasks.length > 0 && !hideCompleted && (
         <div>
           <h3 className="text-xs uppercase tracking-wide text-white/50 mb-2 font-semibold">
             Completed ({completedTasks.length})

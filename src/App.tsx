@@ -14,6 +14,7 @@ function App() {
   const [isTaskDrawerOpen, setIsTaskDrawerOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [showResumePrompt, setShowResumePrompt] = useState(false);
+  const [manuallyOpened, setManuallyOpened] = useState(false);
 
   const tick = useStore((state) => state.tick);
   const status = useStore((state) => state.status);
@@ -66,6 +67,13 @@ function App() {
     }
   }, [restoreSession]);
 
+  // VTea UI Makeover: Auto-hide task drawer when timer starts
+  useEffect(() => {
+    if (status === 'running' && !manuallyOpened) {
+      setIsTaskDrawerOpen(false);
+    }
+  }, [status, manuallyOpened]);
+
   // Handle visibility change (background tab)
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -89,6 +97,16 @@ function App() {
     setShowResumePrompt(false);
   };
 
+  const handleTaskDrawerToggle = () => {
+    const newState = !isTaskDrawerOpen;
+    setIsTaskDrawerOpen(newState);
+    if (status === 'running' && newState) {
+      setManuallyOpened(true);
+    } else {
+      setManuallyOpened(false);
+    }
+  };
+
   return (
     <div className="min-h-screen relative">
       {/* Skip to main content link for accessibility */}
@@ -103,7 +121,7 @@ function App() {
       <InspirationalQuote />
       <TopBar
         onSettingsClick={() => setIsSettingsOpen(true)}
-        onTasksClick={() => setIsTaskDrawerOpen(!isTaskDrawerOpen)}
+        onTasksClick={handleTaskDrawerToggle}
       />
       
       <div className="flex relative z-10">
