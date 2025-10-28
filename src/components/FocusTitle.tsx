@@ -1,6 +1,6 @@
 /**
  * FocusTitle - Inline editable session title component
- * VTea UI Makeover: Editable title above timer, auto-fills from active task
+ * VTea UI Makeover: Added pencil icon indicator for visual affordance
  */
 
 import { useState, useEffect, useRef } from 'react';
@@ -15,6 +15,7 @@ export function FocusTitle() {
 
   const [title, setTitle] = useState('Untitled Session');
   const [isEditing, setIsEditing] = useState(false);
+  const [showPencil, setShowPencil] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Auto-fill from active task
@@ -57,7 +58,11 @@ export function FocusTitle() {
   }, [isEditing]);
 
   return (
-    <div className="text-center mb-4">
+    <div 
+      className="text-center mb-4 relative"
+      onMouseEnter={() => setShowPencil(true)}
+      onMouseLeave={() => setShowPencil(false)}
+    >
       {isEditing ? (
         <input
           ref={inputRef}
@@ -72,25 +77,41 @@ export function FocusTitle() {
           maxLength={100}
         />
       ) : (
-        <h2
-          onClick={handleClick}
-          className="text-2xl md:text-3xl font-semibold cursor-text hover:text-white/100 transition-colors px-2 py-1"
-          style={{ 
-            fontFamily: 'Inter, sans-serif', 
-            fontWeight: 600,
-            color: title === 'Untitled Session' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.9)'
-          }}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleClick();
-            }
-          }}
-        >
-          {title}
-        </h2>
+        <div className="relative inline-block w-full">
+          <h2
+            onClick={handleClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleClick();
+              }
+            }}
+            className="text-2xl md:text-3xl font-semibold cursor-text hover:text-white/100 transition-colors px-2 py-1 inline-block"
+            style={{ 
+              fontFamily: 'Inter, sans-serif', 
+              fontWeight: 600,
+              color: title === 'Untitled Session' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.9)'
+            }}
+            role="button"
+            tabIndex={0}
+          >
+            {title}
+          </h2>
+          {/* T301-T302: Pencil icon indicator on hover/focus - VTea UI Makeover */}
+          {showPencil && (
+            <span 
+              className="absolute ml-2 inline-block transition-opacity"
+              style={{
+                color: 'rgba(255, 255, 255, 0.5)',
+                fontSize: '18px',
+                verticalAlign: 'middle',
+              }}
+              aria-hidden="true"
+            >
+              ✏
+            </span>
+          )}
+        </div>
       )}
     </div>
   );

@@ -62,10 +62,10 @@ This document provides a complete, dependency-ordered task breakdown for impleme
 
 ### Environment Verification
 
-- [ ] T001 Verify project runs on branch `003-action-controls` with `npm run dev`
-- [ ] T002 [P] Verify React 18.3.1, TypeScript 5.9.3, Tailwind CSS 3.4.18 present (no new packages needed)
-- [ ] T003 [P] Verify Zustand timerSlice exported and accessible from `src/store/index.ts`
-- [ ] T004 Confirm existing FocusCard component renders correctly at `src/components/FocusCard.tsx`
+- [X] T001 Verify project runs on branch `003-action-controls` with `npm run dev`
+- [X] T002 [P] Verify React 18.3.1, TypeScript 5.9.3, Tailwind CSS 3.4.18 present (no new packages needed)
+- [X] T003 [P] Verify Zustand timerSlice exported and accessible from `src/store/index.ts`
+- [X] T004 Confirm existing FocusCard component renders correctly at `src/components/FocusCard.tsx`
 
 **Acceptance:** Dev server runs, dependencies verified, existing components work
 
@@ -87,19 +87,19 @@ This document provides a complete, dependency-ordered task breakdown for impleme
 
 ### Restart Button Component
 
-- [ ] T101 [P] [US1] Create `src/components/RestartButton.tsx` component with icon SVG
-- [ ] T102 [P] [US1] Implement SVG circular arrow icon (↻) with stroke styling
-- [ ] T103 [US1] Add ARIA label "Restart session" to RestartButton in `src/components/RestartButton.tsx`
-- [ ] T104 [P] [US1] Add tooltip with shortcut hint ("Restart session (R)") to `src/components/RestartButton.tsx`
-- [ ] T105 [US1] Add touch target styling (≥44×44px) to RestartButton in `src/components/RestartButton.tsx`
-- [ ] T106 [US1] Integrate RestartButton into FocusCard action row in `src/components/FocusCard.tsx`
+- [X] T101 [P] [US1] Create `src/components/RestartButton.tsx` component with icon SVG
+- [X] T102 [P] [US1] Implement SVG circular arrow icon (↻) with stroke styling
+- [X] T103 [US1] Add ARIA label "Restart session" to RestartButton in `src/components/RestartButton.tsx`
+- [X] T104 [P] [US1] Add tooltip with shortcut hint ("Restart session (R)") to `src/components/RestartButton.tsx`
+- [X] T105 [US1] Add touch target styling (≥44×44px) to RestartButton in `src/components/RestartButton.tsx`
+- [X] T106 [US1] Integrate RestartButton into FocusCard action row in `src/components/FocusCard.tsx`
 
 ### Restart Logic & Keyboard Handler
 
-- [ ] T107 [P] [US1] Implement `handleRestart()` function in `src/components/FocusCard.tsx` to reset timer
-- [ ] T108 [US1] Add keyboard event listener for R key in `src/components/FocusCard.tsx` using useEffect
-- [ ] T109 [P] [US1] Add visual confirmation animation (pulse) on restart in `src/index.css`
-- [ ] T110 [US1] Connect handleRestart to RestartButton onClick prop in `src/components/FocusCard.tsx`
+- [X] T107 [P] [US1] Implement `handleRestart()` function in `src/components/FocusCard.tsx` to reset timer
+- [X] T108 [US1] Add keyboard event listener for R key in `src/components/FocusCard.tsx` using useEffect
+- [X] T109 [P] [US1] Add visual confirmation animation (pulse) on restart in `src/index.css`
+- [X] T110 [US1] Connect handleRestart to RestartButton onClick prop in `src/components/FocusCard.tsx`
 
 ### Testing & Validation (Phase 1)
 
@@ -131,22 +131,22 @@ This document provides a complete, dependency-ordered task breakdown for impleme
 
 ### Fullscreen Button Component
 
-- [ ] T201 [P] [US2] Create `src/components/FullscreenButton.tsx` component with expand/collapse icons
-- [ ] T202 [P] [US2] Implement SVG expand icon (⛶) for fullscreen in `src/components/FullscreenButton.tsx`
-- [ ] T203 [P] [US2] Implement SVG collapse icon (⛗) for exit fullscreen in `src/components/FullscreenButton.tsx`
-- [ ] T204 [US2] Add ARIA label "Fullscreen mode" and aria-pressed state to FullscreenButton
-- [ ] T205 [P] [US2] Add tooltip with shortcut ("Fullscreen (F)") to `src/components/FullscreenButton.tsx`
-- [ ] T206 [P] [US2] Add touch target styling (≥44×44px) to FullscreenButton in `src/components/FullscreenButton.tsx`
-- [ ] T207 [US2] Integrate FullscreenButton into FocusCard action row in `src/components/FocusCard.tsx`
+- [X] T201 [P] [US2] Create `src/components/FullscreenButton.tsx` component with expand/collapse icons
+- [X] T202 [P] [US2] Implement SVG expand icon (⛶) for fullscreen in `src/components/FullscreenButton.tsx`
+- [X] T203 [P] [US2] Implement SVG collapse icon (⛗) for exit fullscreen in `src/components/FullscreenButton.tsx`
+- [X] T204 [US2] Add ARIA label "Fullscreen mode" and aria-pressed state to FullscreenButton
+- [X] T205 [P] [US2] Add tooltip with shortcut ("Fullscreen (F)") to `src/components/FullscreenButton.tsx`
+- [X] T206 [P] [US2] Add touch target styling (≥44×44px) to FullscreenButton in `src/components/FullscreenButton.tsx`
+- [X] T207 [US2] Integrate FullscreenButton into FocusCard action row in `src/components/FocusCard.tsx`
 
 ### Fullscreen API Integration
 
-- [ ] T208 [P] [US2] Detect Fullscreen API availability in `src/components/FocusCard.tsx` using `document.fullscreenEnabled`
-- [ ] T209 [US2] Implement `handleFullscreenToggle()` in `src/components/FocusCard.tsx` with requestFullscreen/exitFullscreen
-- [ ] T210 [US2] Add keyboard event listener for F key in `src/components/FocusCard.tsx` using useEffect
-- [ ] T211 [P] [US2] Add ESC key handler to sync fullscreen state in `src/components/FocusCard.tsx`
+- [X] T208 [P] [US2] Detect Fullscreen API availability in `src/components/FocusCard.tsx` using `document.fullscreenEnabled`
+- [X] T209 [US2] Implement `handleFullscreenToggle()` in `src/components/FocusCard.tsx` with requestFullscreen/exitFullscreen
+- [X] T210 [US2] Add keyboard event listener for F key in `src/components/FocusCard.tsx` using useEffect
+- [X] T211 [P] [US2] Add ESC key handler to sync fullscreen state in `src/components/FocusCard.tsx`
 - [ ] T212 [US2] Add conditional rendering to hide fullscreen button on iOS Safari in `src/components/FullscreenButton.tsx`
-- [ ] T213 [P] [US2] Add error handling for fullscreen request denial (browser policy) in `src/components/FocusCard.tsx`
+- [X] T213 [P] [US2] Add error handling for fullscreen request denial (browser policy) in `src/components/FocusCard.tsx`
 
 ### Testing & Validation (Phase 2)
 

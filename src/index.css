@@ -60,5 +60,42 @@
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+
+  /* T109: Pulse animation for restart confirmation */
+  @keyframes pulse-brief {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Action button animation on click */
+  .action-button.activated {
+    animation: pulse-brief 200ms ease-in-out;
+  }
+
+  /* T303 & T307: Hover and active states with prefers-reduced-motion support */
+  .action-button {
+    transition: all 150ms ease-out;
+  }
+
+  .action-button:hover {
+    transform: scale(1.05);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .action-button {
+      transition: none;
+    }
+
+    .action-button:hover {
+      transform: none;
+    }
+  }
 }
 

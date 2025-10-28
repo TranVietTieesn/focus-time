@@ -1,15 +1,19 @@
 /**
  * FocusCard - Main timer card with glassmorphism effect
- * VTea UI Makeover: Added FocusTitle and ModeSwitcher
+ * VTea UI Makeover: Action Controls Enhancement
  */
 
+import { useEffect, useState } from 'react';
 import { useStore } from '@/store';
 import { formatTime, minutesToSeconds } from '@/lib/time';
 import { FocusTitle } from './FocusTitle';
 import { ModeSwitcher } from './ModeSwitcher';
+import { RestartButton } from './RestartButton';
+import { FullscreenButton } from './FullscreenButton';
 
 export function FocusCard() {
   const status = useStore((state) => state.status);
+  const type = useStore((state) => state.type);
   const remainingSec = useStore((state) => state.remainingSec);
   const currentSessionIndex = useStore((state) => state.currentSessionIndex);
   const sessionsBeforeLongBreak = useStore((state) => state.sessionsBeforeLongBreak);
@@ -23,6 +27,9 @@ export function FocusCard() {
   const shortBreakMin = useStore((state) => state.shortBreakMin);
   const longBreakMin = useStore((state) => state.longBreakMin);
 
+  // Fullscreen state
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const handleStart = () => {
     const durationSec = minutesToSeconds(workMin);
     start('work', durationSec);
@@ -33,6 +40,60 @@ export function FocusCard() {
     const durationSec = minutesToSeconds(duration);
     start(breakType, durationSec);
   };
+
+  // T107: Implement handleRestart() function
+  const handleRestart = () => {
+    const duration = 
+      type === 'work' ? workMin :
+      type === 'shortBreak' ? shortBreakMin :
+      longBreakMin;
+    start(type, minutesToSeconds(duration));
+  };
+
+  // T209: Implement handleFullscreenToggle()
+  const handleFullscreenToggle = async () => {
+    try {
+      if (isFullscreen) {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+        }
+        setIsFullscreen(false);
+      } else {
+        await document.documentElement.requestFullscreen();
+        setIsFullscreen(true);
+      }
+    } catch (error) {
+      console.error('Fullscreen toggle failed:', error);
+      // Gracefully handle fullscreen denial
+    }
+  };
+
+  // T108 & T210: Add keyboard event listeners for R and F keys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'r') {
+        handleRestart();
+      }
+      if (e.key.toLowerCase() === 'f') {
+        handleFullscreenToggle();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [type, workMin, shortBreakMin, longBreakMin, isFullscreen]);
+
+  // T211: Handle ESC key to sync fullscreen state
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, [isFullscreen]);
 
   return (
     <div className="w-full max-w-2xl glass-panel rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
@@ -138,6 +199,16 @@ export function FocusCard() {
             </button>
           </div>
         )}
+      </div>
+
+      {/* Action Controls Row - T106 & T207: Integrate buttons */}
+      <div className="flex justify-center gap-3 mt-6">
+        <RestartButton onRestart={handleRestart} />
+        <FullscreenButton 
+          isFullscreen={isFullscreen}
+          onToggle={handleFullscreenToggle}
+          isAvailable={!!document.fullscreenEnabled}
+        />
       </div>
 
       {/* Screen reader announcements - VTea UI Makeover WCAG AA */}
