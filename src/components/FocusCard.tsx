@@ -152,9 +152,12 @@ export function FocusCard() {
         )}
       </div>
 
-      {/* Screen reader announcement */}
+      {/* Screen reader announcements - VTea UI Makeover WCAG AA */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
-        {status === 'running' && Math.floor(remainingSec / 60)} minutes remaining
+        {status === 'running' && `${Math.floor(remainingSec / 60)} minutes remaining`}
+        {status === 'paused' && 'Timer paused'}
+        {status === 'idle' && 'Timer ready to start'}
+        {status === 'running' && remainingSec === 300 && '5 minutes remaining'}
       </div>
     </div>
   );

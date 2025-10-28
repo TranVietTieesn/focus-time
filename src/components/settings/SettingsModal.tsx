@@ -32,6 +32,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [localLongBreak, setLocalLongBreak] = useState(longBreakMin.toString());
   const [localSessions, setLocalSessions] = useState(sessionsBeforeLongBreak.toString());
   const [error, setError] = useState('');
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -48,13 +49,22 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     }
   };
 
-  const handleReset = () => {
+  const handleResetClick = () => {
+    setShowResetConfirm(true);
+  };
+
+  const handleResetConfirm = () => {
     resetToDefaults();
     setLocalWorkMin('25');
     setLocalShortBreak('5');
     setLocalLongBreak('15');
     setLocalSessions('4');
     setError('');
+    setShowResetConfirm(false);
+  };
+
+  const handleResetCancel = () => {
+    setShowResetConfirm(false);
   };
 
   return (
@@ -150,19 +160,44 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={handleReset}
-            className="
-              w-full px-4 py-2 rounded-lg
-              bg-white/5 hover:bg-white/10
-              text-white/70 hover:text-white
-              text-sm font-medium
-              transition-colors focus-ring
-            "
-          >
-            Reset to Defaults
-          </button>
+          {/* VTea UI Makeover: Non-blocking reset confirmation */}
+          {!showResetConfirm ? (
+            <button
+              type="button"
+              onClick={handleResetClick}
+              className="
+                w-full px-4 py-2 rounded-lg
+                bg-white/5 hover:bg-white/10
+                text-white/70 hover:text-white
+                text-sm font-medium
+                transition-colors focus-ring
+              "
+            >
+              Reset to Defaults
+            </button>
+          ) : (
+            <div className="flex flex-col gap-2 p-3 rounded-lg bg-white/5 border border-white/20">
+              <p className="text-sm text-white/80">
+                Reset all settings to defaults?
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleResetCancel}
+                  className="flex-1 px-3 py-1.5 rounded bg-white/10 hover:bg-white/15 text-white/70 text-sm transition-colors focus-ring"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResetConfirm}
+                  className="flex-1 px-3 py-1.5 rounded bg-secondary hover:bg-secondary-dark text-white text-sm transition-colors focus-ring"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </form>
     </Modal>
