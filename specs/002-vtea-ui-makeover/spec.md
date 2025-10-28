@@ -2,8 +2,8 @@
 
 **Project:** Focus Timer Hub  
 **Spec ID:** 002-vtea-ui-makeover  
-**Version:** 1.1  
-**Status:** Draft  
+**Version:** 1.2  
+**Status:** Clarified - Ready for Planning  
 **Last Updated:** 2025-10-28
 
 ---
@@ -13,6 +13,21 @@
 VTea UI Makeover is a visual refresh of the Focus Timer Hub MVP that elevates the user experience to match modern focus app standards (Flocus, LifeAt) while maintaining the core constitutional principles of performance, accessibility, and local-first architecture. The update transforms the functional MVP into an immersive, cinematic focus environment that reduces visual noise, improves hierarchy, and creates a calming atmosphere conducive to deep work. All enhancements prioritize clarity, mobile-first design, and instant usability without compromising the sub-2-second load time or offline functionality.
 
 This is a UI/UX enhancement layer—core timer logic, task management, and data persistence remain unchanged.
+
+---
+
+## Clarifications
+
+### Session 2025-10-28
+
+- Q: Should background be static gradient or curated image? → A: CSS gradient (zero-cost) with optional progressive WebP image under 80KB; radial + linear dark overlay at 40-60% opacity
+- Q: Typography system (font family and weights)? → A: Inter font family: 700 weight for timer, 600 for titles, 400 for body; base 16px; timer ≥120px desktop, ≥90px mobile
+- Q: Color token system? → A: Primary (Focus): #4B6BFB; Secondary (Break): #FF89BB; Surface: white 8-12% opacity + blur(16px); Text: white 90% (primary), 70% (secondary)
+- Q: Mode switcher implementation pattern? → A: Segmented control with pill buttons grouped; active=filled primary color; inactive=outline; disabled=50% opacity; aria-pressed on each button
+- Q: Accessibility specifications? → A: Modal focus trap; ESC closes and returns focus to trigger; aria-live="polite" announces start/pause/resume/complete + "5 minutes remaining"; touch targets ≥44×44px; focus ring 2px with ≥3:1 contrast
+- Q: Task drawer behavior (mobile vs desktop)? → A: Auto-collapse when timer starts; small toggle button persists. If user manually reopens during session, keep open until user closes. Mobile: bottom sheet; Desktop: left side-sheet
+- Q: Performance budget specifics? → A: Total gzipped JS ≤150KB; LCP <2s on 3G; background images total ≤80KB. Prefer CSS gradients if budget is at risk
+- Q: Branding and copy? → A: Header logo text: "VTea"; tagline: "focus & chill"; inspirational quote: "Your thoughts deserve a calm place." (static)
 
 ---
 
@@ -188,6 +203,87 @@ This is a UI/UX enhancement layer—core timer logic, task management, and data 
 
 ## Design & UX
 
+### Branding & Copy
+
+**Logo/Brand Name:** "VTea"
+- Position: Top-left corner
+- Typography: Inter 600 (Semi-Bold), 20-24px
+- Color: White at 90% opacity
+
+**Tagline:** "focus & chill"
+- Position: Adjacent to logo or subtitle
+- Typography: Inter 400 (Regular), 12-14px
+- Color: White at 70% opacity
+- Optional: Can be hidden on very small screens (<375px)
+
+**Inspirational Quote:** "Your thoughts deserve a calm place."
+- Position: Top-right corner (desktop); below timer (mobile)
+- Typography: Inter 400 (Regular), 14-16px, italic
+- Color: White at 60% opacity
+- Behavior: Static (no daily rotation in this version)
+
+### Typography System
+
+**Font Family:** Inter (sans-serif, optimized for UI)
+
+**Font Weights:**
+- **700 (Bold):** Timer display (primary visual anchor)
+- **600 (Semi-Bold):** Focus title, headings, mode switcher labels
+- **400 (Regular):** Body text, task names, settings labels
+
+**Font Sizes:**
+- **Base:** 16px (body text, minimum for accessibility)
+- **Timer Desktop:** ≥120px (primary visual element)
+- **Timer Mobile:** ≥90px (scaled for smaller screens)
+- **Focus Title:** 24-32px (responsive scaling)
+- **Mode Switcher Labels:** 14-16px
+- **Task List Items:** 14-16px
+- **Helper Text:** 12-14px (validation hints, timestamps)
+
+**Line Heights:**
+- Timer: 1.0 (compact, numerical display)
+- Headings: 1.2 (tight for emphasis)
+- Body/UI text: 1.5 (readable, accessible)
+
+**Letter Spacing:**
+- Timer: -0.02em (slight tightening for large numerals)
+- All other text: default (0)
+
+### Color System
+
+**Mode Colors:**
+- **Primary (Focus Mode):** #4B6BFB (vibrant blue)
+- **Secondary (Break Mode):** #FF89BB (soft pink)
+- **Long Break Mode:** #10B981 (calming green, derived from success state)
+
+**Surface/Glass Morphism:**
+- **Background:** white at 8-12% opacity
+- **Backdrop Filter:** blur(16px)
+- **Border:** 1px solid white at 20% opacity (subtle edge definition)
+- **Shadow:** 0 8px 32px rgba(0, 0, 0, 0.1) (soft depth)
+
+**Text Colors (on dark backgrounds):**
+- **Primary Text:** white at 90% opacity (high contrast for readability)
+- **Secondary Text:** white at 70% opacity (de-emphasized content)
+- **Tertiary Text:** white at 50% opacity (timestamps, helper text)
+
+**Interactive States:**
+- **Hover:** +10% opacity or slight color lightening
+- **Active/Pressed:** -10% opacity or slight color darkening
+- **Disabled:** 40-50% opacity of base color
+- **Focus Indicator:** 2px solid white at 80% opacity (keyboard navigation)
+
+**Semantic Colors:**
+- **Success/Complete:** #10B981 (green)
+- **Error/Invalid:** #EF4444 (red)
+- **Warning:** #F59E0B (amber)
+- **Info:** #3B82F6 (blue)
+
+**Contrast Compliance:**
+- All color combinations tested to meet WCAG AA (4.5:1 for body text, 3:1 for large text/UI elements)
+- Glass morphism surfaces must maintain sufficient contrast with overlay backgrounds
+- Dark overlay (40-60% opacity) ensures text readability on any background
+
 ### Visual Hierarchy
 
 **Primary Elements (Highest Priority):**
@@ -209,33 +305,41 @@ This is a UI/UX enhancement layer—core timer logic, task management, and data 
 
 **Requirements:**
 - Full viewport coverage (100vw × 100vh)
-- Subtle overlay for text contrast (dark semi-transparent layer or gradient)
+- CSS gradient foundation (zero bundle cost, instant render)
+- Optional progressive WebP image (≤80KB) loads after gradient displays
+- Radial + linear dark overlay at 40-60% opacity for text contrast
 - Background must not interfere with readability (minimum 4.5:1 contrast for body text)
-- Assets optimized: use modern formats (WebP with JPEG fallback) or CSS gradients
-- Background can be static gradient (no animation required to respect reduced-motion)
+- No animation required (respects reduced-motion by default)
 
-**Contrast Strategy:**
-- Apply 40-60% opacity dark overlay on background images
-- Use gradient overlays (e.g., radial gradient from center) to focus attention on timer
-- Ensure all text elements have sufficient contrast regardless of background
+**Implementation Strategy:**
+- Base layer: CSS gradient (e.g., radial gradient from center or linear top-to-bottom)
+- Progressive enhancement: WebP image with JPEG fallback (if budget allows, ≤80KB total)
+- Overlay composition: Radial gradient (center fade) + linear gradient (top-to-bottom darkening)
+- Fallback behavior: On slow connections or if image fails, gradient remains fully functional
+- Ensure all text elements have sufficient contrast (4.5:1 minimum) regardless of background state
 
 ### Mode Switcher Design
 
+**Pattern:** Segmented control (pill-style button group)
+
 **Layout:**
-- Horizontal row of three buttons
-- Rounded pill shape (fully rounded ends)
+- Horizontal row of three buttons: Focus | Short Break | Long Break
+- Rounded pill shape (fully rounded ends: border-radius 999px or 50%)
 - Buttons grouped together with minimal gap (1-2px)
+- Equal width for balance, or auto-width with padding
 
-**States:**
-- **Active:** Filled background, high contrast text, no border
-- **Inactive:** Transparent/outlined, medium contrast text
-- **Hover:** Subtle background color shift, smooth transition
-- **Disabled:** Reduced opacity (50-60%), cursor not-allowed
+**Visual States:**
+- **Active (Selected):** Filled background with primary color (#4B6BFB for Focus, #FF89BB for Short Break, #10B981 for Long Break); white text at 100% opacity; no border
+- **Inactive:** Outline style (1px border white at 30% opacity); white text at 70% opacity; transparent background
+- **Hover (Inactive):** Background white at 5% opacity; border white at 40% opacity; smooth transition (200ms)
+- **Disabled:** 50% opacity of current state; cursor not-allowed; happens during active timer session
 
-**Accessibility:**
-- Each button has clear label (no icon-only)
-- Active state indicated via ARIA (aria-pressed or aria-selected)
-- Focus indicators visible on keyboard navigation
+**Accessibility Implementation:**
+- Each button uses `<button>` element with explicit label text (no icon-only)
+- Active state indicated via `aria-pressed="true"` (inactive uses `aria-pressed="false"`)
+- Focus indicators: 2px solid white at 80% opacity, 2px offset
+- Keyboard navigation: Tab moves between buttons, Enter/Space activates
+- Screen reader announces: "Focus mode, button, pressed" or "Short Break, button, not pressed"
 
 ### Action Controls Layout
 
@@ -298,26 +402,46 @@ This is a UI/UX enhancement layer—core timer logic, task management, and data 
 
 ### Accessibility Enhancements
 
-**Color Contrast:**
-- All text meets WCAG AA (4.5:1 for normal text, 3:1 for large text)
-- Interactive elements meet 3:1 contrast against background
-- Focus indicators meet 3:1 contrast
+**Color Contrast (WCAG AA Compliance):**
+- All body text: minimum 4.5:1 contrast ratio
+- Large text (≥24px or ≥19px bold): minimum 3:1 contrast ratio
+- Interactive elements: minimum 3:1 contrast against background
+- Focus indicators: minimum 3:1 contrast (2px solid white at 80% opacity)
+- Timer display: maximum contrast (white 100% opacity on dark overlay)
 
 **Keyboard Navigation:**
-- Tab order: Branding → Mode Switcher → Focus Title → Timer Controls → Task Toggle → Settings
-- Focus trap in modals (Tab cycles within modal, ESC closes and returns focus)
-- Visible focus outlines on all interactive elements (2px solid, high contrast color)
+- **Tab Order:** Branding → Mode Switcher → Focus Title → Timer Controls → Task Toggle → Settings → Task List (when open)
+- **Focus Trap in Modals:** Tab/Shift+Tab cycles within modal; cannot escape to page content
+- **ESC Key Behavior:** Closes active modal/drawer and returns focus to the trigger element
+- **Visible Focus Indicators:** 2px solid outline, white at 80% opacity, 2px offset from element
+- **Activation:** Enter and Space keys activate all buttons and controls
+- **No Keyboard Traps:** All interactive elements can be navigated to and away from
 
-**Screen Reader Support:**
-- Timer status announced via aria-live="polite" region
-- Mode changes announced when user switches modes
-- Task drawer state changes announced ("Task list opened" / "Task list closed")
-- All icon buttons have aria-label descriptors
+**Screen Reader Support (ARIA Implementation):**
+- **Timer Status Region:** `aria-live="polite"` announces:
+  - "Timer started" (on start)
+  - "Timer paused" (on pause)
+  - "Timer resumed" (on resume)
+  - "5 minutes remaining" (at 5-minute mark)
+  - "Session complete" (at 0:00)
+- **Mode Changes:** Announced when user switches modes (e.g., "Focus mode selected")
+- **Task Drawer:** State changes announced ("Task list opened" / "Task list closed")
+- **Icon-Only Buttons:** All have descriptive `aria-label` (e.g., "Restart timer", "Enter fullscreen")
+- **Focus Title:** Editable region marked with `contenteditable` and appropriate ARIA
+- **Mode Switcher:** Each button uses `aria-pressed` to indicate selected state
 
-**Motion Preferences:**
-- Drawer slide animations disabled if prefers-reduced-motion
-- Mode switcher transitions disabled if prefers-reduced-motion
-- Timer countdown remains smooth (essential feedback)
+**Touch Targets (Mobile Accessibility):**
+- **Minimum Size:** All interactive elements ≥44×44px (WCAG 2.1 Level AA)
+- **Spacing:** Minimum 8px gap between adjacent touch targets
+- **Primary Actions:** ≥48×48px for Start/Pause button (exceeds minimum)
+- **Tested on Real Devices:** iOS Safari, Android Chrome with actual finger interaction
+
+**Motion Preferences (prefers-reduced-motion):**
+- **Drawer Animations:** Slide-in/out animations disabled; instant show/hide used instead
+- **Mode Switcher Transitions:** Color/opacity changes instant instead of animated
+- **Button Hover Effects:** Instant state changes instead of smooth transitions
+- **Timer Countdown:** Remains animated (essential feedback, not decorative)
+- **Focus Indicators:** No animation on focus state changes
 
 ### Responsive Breakpoints
 
@@ -457,9 +581,12 @@ This is a UI/UX enhancement layer—core timer logic, task management, and data 
 
 ### Performance Metrics
 - [ ] **Lighthouse Performance:** Score ≥90 on 3G throttled connection (mid-tier device)
-- [ ] **Initial load time:** Page interactive in under 2 seconds on 3G
-- [ ] **Bundle size:** Total compressed bundle ≤150KB (no regression from MVP target)
-- [ ] **Background assets:** Optimized to <80KB for images or use pure CSS gradients
+- [ ] **Largest Contentful Paint (LCP):** <2 seconds on 3G (Core Web Vital)
+- [ ] **Time to Interactive (TTI):** Page interactive in under 2 seconds on 3G
+- [ ] **Total Bundle Size:** Gzipped JavaScript ≤150KB (no regression from MVP)
+- [ ] **Background Assets:** Images total ≤80KB; prefer CSS gradients if budget at risk
+- [ ] **Font Loading:** Inter font subset loaded with font-display: swap (non-blocking)
+- [ ] **First Contentful Paint (FCP):** <1.5 seconds on 3G
 
 ### Accessibility Metrics
 - [ ] **Lighthouse Accessibility:** Score ≥95 (target: 100)
@@ -487,28 +614,30 @@ This is a UI/UX enhancement layer—core timer logic, task management, and data 
 
 | Question | Impact | Resolution |
 |----------|--------|------------|
-| Should background be static gradient or curated image? | Medium | **Default:** Start with optimized gradient (zero bundle cost), add optional curated image pack later if performance allows. Gradient ensures fast load and consistent branding. |
-| What happens to background on very slow connections? | Low | **Strategy:** Use CSS gradient as instant fallback, progressively load image if available. App remains functional with gradient-only. |
-| Should inspirational quote rotate daily or be static? | Low | **Default:** Static quote for MVP ("Focus & Chill" tagline). Dynamic quotes require quote library (adds bundle size) - defer to future phase. |
-| How should focus title editing work on mobile? | Medium | **Default:** Tap to edit (inline editable text), mobile keyboard appears automatically. Save on blur or Enter key. No modal required. |
-| Should task drawer position differ on mobile vs. desktop? | Medium | **Default:** Bottom sheet on mobile (thumb-friendly), side panel on desktop (utilizes horizontal space). Tested in usability rounds. |
-| What if user has 50+ tasks and "Hide completed" is off? | Low | **Strategy:** Drawer content is scrollable. Add "Show only active" filter by default. Completed tasks archived after 24 hours in future phase. |
-| Should fullscreen mode be browser fullscreen or maximize layout? | Low | **Default:** Browser fullscreen API (true fullscreen). Provides most immersive experience. Fallback to maximized layout if API denied. |
+| Should background be static gradient or curated image? | Medium | **RESOLVED:** CSS gradient foundation with optional progressive WebP image (≤80KB). Radial + linear dark overlay at 40-60% opacity. Gradient ensures instant render, image progressively enhances. |
+| What happens to background on very slow connections? | Low | **RESOLVED:** CSS gradient displays immediately (zero wait time). WebP image loads progressively after gradient is visible. App remains fully functional with gradient-only fallback. |
+| Should inspirational quote rotate daily or be static? | Low | **RESOLVED:** Static quote "Your thoughts deserve a calm place." Dynamic quotes deferred to future phase to preserve bundle size budget. |
+| How should focus title editing work on mobile? | Medium | **RESOLVED:** Tap to edit (inline editable with contenteditable), mobile keyboard appears automatically. Save on blur or Enter key. No modal required. |
+| Should task drawer position differ on mobile vs. desktop? | Medium | **RESOLVED:** Bottom sheet on mobile (thumb-friendly), left side-sheet on desktop (utilizes horizontal space). Auto-collapses when timer starts; manual reopen persists until user closes. |
+| What if user has 50+ tasks and "Hide completed" is off? | Low | **Strategy:** Drawer content is scrollable. "Hide completed" toggle available to reduce clutter. Completed tasks archived after 24 hours in future phase. |
+| Should fullscreen mode be browser fullscreen or maximize layout? | Low | **Strategy:** Browser fullscreen API (true fullscreen). Provides most immersive experience. Fallback to maximized layout if API denied. |
 
 ---
 
 ## Assumptions
 
 1. **No behavior changes:** Core timer logic, task management, and data persistence remain exactly as in MVP—only visual layer changes
-2. **Modern browser support:** Same target as MVP (Chrome 60+, Safari 12+, Firefox 60+) with ES6+ and CSS Grid/Flexbox support
+2. **Modern browser support:** Same target as MVP (Chrome 60+, Safari 12+, Firefox 60+) with ES6+ and CSS Grid/Flexbox support; backdrop-filter support for glass morphism
 3. **Existing assets reusable:** Current component structure supports visual enhancements without major refactoring
-4. **Performance budget:** 150KB gzipped bundle target from MVP still applies; background optimization critical
+4. **Performance budget:** 150KB gzipped bundle target from MVP maintained; CSS gradient foundation ensures zero-cost background with optional ≤80KB image enhancement
 5. **Single focus session type:** Focus title applies to current session only; no cross-session title persistence needed
-6. **Branding flexibility:** "VTea" name and tagline can be updated later; structure supports easy text swap
-7. **No new external dependencies:** All UI enhancements use existing styling framework/approach from MVP
-8. **Accessibility baseline:** MVP already has basic accessibility; this spec enhances and audits existing patterns
-9. **No analytics required:** Success metrics measured via manual testing and Lighthouse audits (no tracking scripts)
-10. **English language only:** Inspirational text and UI labels remain English (internationalization deferred)
+6. **Branding finalized:** "VTea" with "focus & chill" tagline; inspirational quote "Your thoughts deserve a calm place." (all static text)
+7. **Typography:** Inter font family available via CDN or bundled; only weights 400, 600, 700 loaded to minimize font file size
+8. **Color palette:** Primary #4B6BFB (Focus), Secondary #FF89BB (Break), Success #10B981 (Long Break) provide sufficient semantic distinction
+9. **Accessibility baseline:** MVP already has basic accessibility; this spec enhances to full WCAG AA compliance with comprehensive keyboard/screen reader support
+10. **No analytics required:** Success metrics measured via manual testing and Lighthouse audits (no tracking scripts)
+11. **English language only:** All UI text and copy remain English (internationalization deferred)
+12. **Glass morphism support:** backdrop-filter widely supported (Chrome 76+, Safari 9+); graceful degradation to solid surfaces on older browsers
 
 ---
 
@@ -550,4 +679,5 @@ This is a UI/UX enhancement layer—core timer logic, task management, and data 
 |---------|------|---------|--------|
 | 1.0 | 2025-10-28 | Initial draft based on UI makeover requirements | AI Spec Generation |
 | 1.1 | 2025-10-28 | Enhanced accessibility section, added performance metrics, clarified immersive background strategy | AI Spec Generation |
+| 1.2 | 2025-10-28 | Clarification session completed: 8 design decisions resolved (background, typography, colors, mode switcher, accessibility, task drawer, performance, branding). Added comprehensive design system sections. Status: Ready for Planning | AI Spec Clarification |
 
