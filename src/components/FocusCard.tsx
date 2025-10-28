@@ -10,7 +10,6 @@ import { ModeSwitcher } from './ModeSwitcher';
 
 export function FocusCard() {
   const status = useStore((state) => state.status);
-  const type = useStore((state) => state.type);
   const remainingSec = useStore((state) => state.remainingSec);
   const currentSessionIndex = useStore((state) => state.currentSessionIndex);
   const sessionsBeforeLongBreak = useStore((state) => state.sessionsBeforeLongBreak);
@@ -33,17 +32,6 @@ export function FocusCard() {
     const duration = breakType === 'shortBreak' ? shortBreakMin : longBreakMin;
     const durationSec = minutesToSeconds(duration);
     start(breakType, durationSec);
-  };
-
-  const getSessionTypeLabel = () => {
-    if (type === 'work') return 'Work Session';
-    if (type === 'shortBreak') return 'Short Break';
-    return 'Long Break';
-  };
-
-  const getSessionColor = () => {
-    if (type === 'work') return 'text-primary';
-    return 'text-secondary';
   };
 
   return (
