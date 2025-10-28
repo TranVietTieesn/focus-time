@@ -1,9 +1,12 @@
 /**
  * FocusCard - Main timer card with glassmorphism effect
+ * VTea UI Makeover: Added FocusTitle and ModeSwitcher
  */
 
 import { useStore } from '@/store';
 import { formatTime, minutesToSeconds } from '@/lib/time';
+import { FocusTitle } from './FocusTitle';
+import { ModeSwitcher } from './ModeSwitcher';
 
 export function FocusCard() {
   const status = useStore((state) => state.status);
@@ -45,17 +48,20 @@ export function FocusCard() {
 
   return (
     <div className="w-full max-w-2xl glass-panel rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
-      {/* Session Type Label */}
-      <div className="text-center mb-4 md:mb-6">
-        <p className={`text-base md:text-lg uppercase tracking-wide ${getSessionColor()}`}>
-          {getSessionTypeLabel()}
-        </p>
-        {status !== 'idle' && (
-          <p className="text-xs md:text-sm text-white/60 mt-2">
+      {/* Focus Title - VTea UI Makeover */}
+      <FocusTitle />
+      
+      {/* Mode Switcher - VTea UI Makeover */}
+      <ModeSwitcher />
+      
+      {/* Session Counter */}
+      {status !== 'idle' && (
+        <div className="text-center mb-4">
+          <p className="text-xs md:text-sm text-white/60">
             Session {currentSessionIndex} of {sessionsBeforeLongBreak}
           </p>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Timer Display - VTea UI Makeover */}
       <div className="text-center mb-6 md:mb-8">
