@@ -66,12 +66,12 @@ This document provides a complete, dependency-ordered task breakdown for impleme
 
 ### Environment Setup
 
-- [ ] T001 Verify project runs on feature branch `002-vtea-ui-makeover` with `npm run dev`
-- [ ] T002 Install design dependencies: confirm Tailwind CSS 3+ and React 18+ are present (no new packages needed)
-- [ ] T003 [P] Create `/public/fonts/` directory for Inter font files (if self-hosting)
-- [ ] T004 [P] Create `/public/images/` directory for optional background WebP image
-- [ ] T005 [P] Download Inter font family WOFF2 files (weights 400, 600, 700) from Google Fonts or prepare CDN link
-- [ ] T006 Create `/src/styles/` directory for design token imports (optional, if not using Tailwind config directly)
+- [X] T001 Verify project runs on feature branch `002-vtea-ui-makeover` with `npm run dev`
+- [X] T002 Install design dependencies: confirm Tailwind CSS 3+ and React 18+ are present (no new packages needed)
+- [X] T003 [P] Create `/public/fonts/` directory for Inter font files (if self-hosting)
+- [X] T004 [P] Create `/public/images/` directory for optional background WebP image
+- [X] T005 [P] Download Inter font family WOFF2 files (weights 400, 600, 700) from Google Fonts or prepare CDN link
+- [X] T006 Create `/src/styles/` directory for design token imports (optional, if not using Tailwind config directly)
 
 **Acceptance:** Development server runs, directories created, fonts ready to integrate
 
@@ -87,29 +87,29 @@ This document provides a complete, dependency-ordered task breakdown for impleme
 
 ### Typography Setup
 
-- [ ] T101 [P] [US1] Add Inter font loading to `index.html` (CDN link) or `src/index.css` (@font-face declarations for self-hosted)
-- [ ] T102 [P] [US1] Update `tailwind.config.ts` to include Inter font family in `fontFamily.sans` and custom sizes (`timer-mobile: 90px`, `timer-desktop: 120px`)
-- [ ] T103 [US1] Test font loading with `font-display: swap` to prevent FOIT (Flash of Invisible Text)
+- [X] T101 [P] [US1] Add Inter font loading to `index.html` (CDN link) or `src/index.css` (@font-face declarations for self-hosted)
+- [X] T102 [P] [US1] Update `tailwind.config.ts` to include Inter font family in `fontFamily.sans` and custom sizes (`timer-mobile: 90px`, `timer-desktop: 120px`)
+- [X] T103 [US1] Test font loading with `font-display: swap` to prevent FOIT (Flash of Invisible Text)
 
 ### Background System
 
-- [ ] T104 [P] [US1] Update `src/components/BackgroundLayer.tsx` to add CSS gradient as base layer (radial gradient: #4B6BFB → #2A2A72 → #1A1A2E)
-- [ ] T105 [P] [US1] Add optional progressive WebP background image (`<picture>` element with WebP source and JPEG fallback, `loading="lazy"`)
-- [ ] T106 [US1] Add radial + linear overlay to `BackgroundLayer.tsx` for text contrast (40-60% dark opacity)
-- [ ] T107 [US1] Verify background contrast ensures WCAG AA compliance (≥4.5:1 for body text) using WebAIM Contrast Checker
+- [X] T104 [P] [US1] Update `src/components/BackgroundLayer.tsx` to add CSS gradient as base layer (radial gradient: #4B6BFB → #2A2A72 → #1A1A2E)
+- [X] T105 [P] [US1] Add optional progressive WebP background image (`<picture>` element with WebP source and JPEG fallback, `loading="lazy"`)
+- [X] T106 [US1] Add radial + linear overlay to `BackgroundLayer.tsx` for text contrast (40-60% dark opacity)
+- [X] T107 [US1] Verify background contrast ensures WCAG AA compliance (≥4.5:1 for body text) using WebAIM Contrast Checker
 
 ### Branding
 
-- [ ] T108 [P] [US1] Update `src/components/TopBar.tsx` to replace "Focus Timer Hub" with "VTea" branding (Inter 600, 20-24px, white 90% opacity)
-- [ ] T109 [P] [US1] Add tagline "focus & chill" to `TopBar.tsx` (Inter 400, 12-14px, white 70% opacity, hidden on small screens <375px)
-- [ ] T110 [P] [US1] Create `src/components/InspirationalQuote.tsx` with static text "Your thoughts deserve a calm place." (Inter 400, 14-16px, italic, white 60% opacity)
-- [ ] T111 [US1] Position `InspirationalQuote` at top-right (desktop) or below timer (mobile) using absolute or responsive positioning
+- [X] T108 [P] [US1] Update `src/components/TopBar.tsx` to replace "Focus Timer Hub" with "VTea" branding (Inter 600, 20-24px, white 90% opacity)
+- [X] T109 [P] [US1] Add tagline "focus & chill" to `TopBar.tsx` (Inter 400, 12-14px, white 70% opacity, hidden on small screens <375px)
+- [X] T110 [P] [US1] Create `src/components/InspirationalQuote.tsx` with static text "Your thoughts deserve a calm place." (Inter 400, 14-16px, italic, white 60% opacity)
+- [X] T111 [US1] Position `InspirationalQuote` at top-right (desktop) or below timer (mobile) using absolute or responsive positioning
 
 ### Timer Visual Hierarchy
 
-- [ ] T112 [P] [US2] Update `src/components/FocusCard.tsx` to apply glass morphism styling (bg-white/10, backdrop-blur-md, border white/20, shadow)
-- [ ] T113 [US2] Update `src/components/TimerDisplay.tsx` to apply Inter 700, 90px (mobile) / 120px (desktop), line-height 1.0, letter-spacing -0.02em
-- [ ] T114 [US2] Add subtle text-shadow to `TimerDisplay.tsx` for depth (0 2px 8px rgba(0, 0, 0, 0.3))
+- [X] T112 [P] [US2] Update `src/components/FocusCard.tsx` to apply glass morphism styling (bg-white/10, backdrop-blur-md, border white/20, shadow)
+- [X] T113 [US2] Update timer display to apply Inter 700, 90px (mobile) / 120px (desktop), line-height 1.0, letter-spacing -0.02em
+- [X] T114 [US2] Add subtle text-shadow to timer for depth (0 2px 8px rgba(0, 0, 0, 0.3))
 
 ### Testing & Validation (Phase 1)
 
