@@ -1,16 +1,21 @@
 /**
- * BackgroundLayer - Immersive full-bleed background with gradient and overlay
- * VTea UI Makeover: CSS gradient foundation with optional progressive WebP image
+ * BackgroundLayer - Cinematic deep gradient with vignette effect
+ * Flocus-inspired: Midnight blue → violet → soft magenta blend
+ * Visual Priority: TERTIARY (atmospheric foundation)
  */
 
 export function BackgroundLayer() {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      {/* CSS Gradient Base Layer (instant, zero-cost) */}
+      {/* Deep Cinematic Gradient Base (midnight blue → violet → magenta) */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(circle at 30% 30%, #4B6BFB 0%, #2A2A72 50%, #1A1A2E 100%)',
+          background: `
+            radial-gradient(ellipse at 20% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 80%, rgba(219, 39, 119, 0.2) 0%, transparent 50%),
+            linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #581c87 75%, #7c2d12 100%)
+          `,
         }}
       />
       
@@ -22,16 +27,19 @@ export function BackgroundLayer() {
           src="/images/background.jpg" 
           alt="" 
           loading="lazy" 
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
         />
       </picture>
       */}
       
-      {/* Radial + Linear Overlay for Text Contrast (40-60% dark opacity) */}
+      {/* Cinematic Vignette + Text Contrast Overlay */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'radial-gradient(circle at center, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.6) 100%)',
+          background: `
+            radial-gradient(ellipse at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%),
+            radial-gradient(circle at 50% 40%, transparent 30%, rgba(0, 0, 0, 0.4) 70%)
+          `,
         }}
       />
     </div>
