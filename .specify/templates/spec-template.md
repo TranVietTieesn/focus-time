@@ -1,115 +1,155 @@
-# Feature Specification: [FEATURE NAME]
+# [FEATURE_NAME] Specification
 
-**Feature Branch**: `[###-feature-name]`  
-**Created**: [DATE]  
-**Status**: Draft  
-**Input**: User description: "$ARGUMENTS"
+**Project:** Focus Timer Hub  
+**Spec ID:** [SPEC_ID]  
+**Version:** 1.0  
+**Status:** Draft / In Review / Approved / Implemented  
+**Last Updated:** [YYYY-MM-DD]
 
-## User Scenarios & Testing *(mandatory)*
+---
 
-<!--
-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
+## Overview
+
+[1-3 sentence description of what this feature does and why it matters]
+
+---
+
+## User Stories & Requirements
+
+### Story 1: [User Role] — [Goal]
+
+**As a** [user role]  
+**I want** [action/feature]  
+**So that** [benefit/outcome]
+
+**Acceptance Criteria:**
+- [ ] [Testable requirement]
+- [ ] [Testable requirement]
+- [ ] [Testable requirement]
+
+---
+
+## Constitutional Compliance Check
+
+**Required:** All features MUST align with Focus Timer Hub constitution before approval.
+
+- [ ] **Principle 1: Focus-first Experience**
+  - Is this feature accessible via minimal interaction?
+  - Does it avoid intrusive notifications or pop-ups?
+  - [ ] Compliant
   
-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
-  Think of each story as a standalone slice of functionality that can be:
-  - Developed independently
-  - Tested independently
-  - Deployed independently
-  - Demonstrated to users independently
--->
-
-### User Story 1 - [Brief Title] (Priority: P1)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
-
----
-
-### User Story 2 - [Brief Title] (Priority: P2)
-
-[Describe this user journey in plain language]
-
-**Why this priority**: [Explain the value and why it has this priority level]
-
-**Independent Test**: [Describe how this can be tested independently]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+- [ ] **Principle 2: Simple and Consistent UI**
+  - Does it follow defined design tokens?
+  - Are all text labels short and direct?
+  - [ ] Compliant
+  
+- [ ] **Principle 3: Accessibility and Mobile-first**
+  - Does it support keyboard navigation?
+  - Is color contrast WCAG AA compliant?
+  - Does it work on mobile and desktop equally?
+  - [ ] Compliant
+  
+- [ ] **Principle 4: Lightweight Performance**
+  - Will it load quickly on weak networks?
+  - Does it respect offline-first behavior?
+  - Are animations subtle and performant?
+  - [ ] Compliant
+  
+- [ ] **Principle 5: Clear and Maintainable Development Workflow**
+  - Is the implementation plan clear and phased?
+  - Can the code be easily maintained and scaled?
+  - [ ] Compliant
+  
+- [ ] **Principle 6: Local-first Secure Data Handling**
+  - Is user data stored locally by default?
+  - Are any transmissions explicitly user-consented?
+  - Is privacy communicated transparently?
+  - [ ] Compliant
 
 ---
 
-### User Story 3 - [Brief Title] (Priority: P3)
+## Design & UX
 
-[Describe this user journey in plain language]
+### User Interface
+[Wireframes, mockups, or description of UI changes]
 
-**Why this priority**: [Explain the value and why it has this priority level]
+### Interactions
+- [Key interaction 1]
+- [Key interaction 2]
 
-**Independent Test**: [Describe how this can be tested independently]
-
-**Acceptance Scenarios**:
-
-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+### Accessibility Considerations
+- Color contrast verified: WCAG AA
+- Keyboard navigation: [Yes/No/Partially]
+- Mobile responsive: [Yes/No/Partially]
 
 ---
 
-[Add more user stories as needed, each with an assigned priority]
+## Technical Details
 
-### Edge Cases
+### Architecture
+[System design, data flow, API contracts]
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right edge cases.
--->
+### Data Model
+```
+[Schema, database structure, or data flow diagram]
+```
 
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+### APIs / Interfaces
+```
+[Public methods, endpoints, or contracts]
+```
 
-## Requirements *(mandatory)*
+### Dependencies
+- [Technology/library 1]
+- [Technology/library 2]
 
-<!--
-  ACTION REQUIRED: The content in this section represents placeholders.
-  Fill them out with the right functional requirements.
--->
+### Performance Targets
+- Load time: [target ms]
+- Memory: [target MB]
+- Offline support: [Yes/No]
 
-### Functional Requirements
+---
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+## Testing Strategy
 
-*Example of marking unclear requirements:*
+- [ ] Unit Tests: [Coverage target, e.g., >80%]
+- [ ] Integration Tests: [Key flows to test]
+- [ ] Accessibility Tests: [WCAG AA verification method]
+- [ ] Mobile Testing: [Device/browser targets]
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+---
 
-### Key Entities *(include if feature involves data)*
+## Rollout Plan
 
-- **[Entity 1]**: [What it represents, key attributes without implementation]
-- **[Entity 2]**: [What it represents, relationships to other entities]
+### Phase 1: [Phase name]
+[Target date and scope]
 
-## Success Criteria *(mandatory)*
+### Phase 2: [Phase name]
+[Target date and scope]
 
-<!--
-  ACTION REQUIRED: Define measurable success criteria.
-  These must be technology-agnostic and measurable.
--->
+### Rollback Plan
+[How to safely rollback if issues arise]
 
-### Measurable Outcomes
+---
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+## Metrics & Success Criteria
+
+- [ ] [Measurable outcome tied to user goal]
+- [ ] [Measurable outcome tied to constitutional principle]
+- [ ] [Performance metric, if applicable]
+
+---
+
+## Open Questions / Risks
+
+| Question | Impact | Notes |
+|----------|--------|-------|
+| [Question] | High/Medium/Low | [Context] |
+
+---
+
+## Appendix: References
+
+- Related specs: [links]
+- Design files: [links]
+- Research docs: [links]

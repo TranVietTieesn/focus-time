@@ -1,104 +1,71 @@
-# Implementation Plan: [FEATURE]
+# [PLAN_TITLE]
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Project:** Focus Timer Hub  
+**Plan Version:** 1.0  
+**Created:** [DATE]  
+**Owner:** [OWNER_NAME]
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+---
 
-## Summary
+## Objective
 
-[Extract from feature spec: primary requirement + technical approach from research]
+[Describe the concrete outcome this plan aims to achieve]
 
-## Technical Context
+---
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
+## Constitution Alignment
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+### Applicable Principles
+- [ ] **Principle 1: Focus-first Experience** — Does this plan reduce distractions?
+- [ ] **Principle 2: Simple and Consistent UI** — Does this plan maintain design consistency?
+- [ ] **Principle 3: Accessibility and Mobile-first** — Does this plan support accessibility standards?
+- [ ] **Principle 4: Lightweight Performance** — Does this plan respect performance budgets?
+- [ ] **Principle 5: Clear and Maintainable Development Workflow** — Does this follow Spec Driven Development?
+- [ ] **Principle 6: Local-first Secure Data Handling** — Does this respect user privacy?
 
-## Constitution Check
+---
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+## Scope
 
-[Gates determined based on constitution file]
+### In Scope
+- [Feature or deliverable 1]
+- [Feature or deliverable 2]
 
-## Project Structure
+### Out of Scope
+- [Explicitly excluded work]
 
-### Documentation (this feature)
+---
 
-```text
-specs/[###-feature]/
-├── plan.md              # This file (/speckit.plan command output)
-├── research.md          # Phase 0 output (/speckit.plan command)
-├── data-model.md        # Phase 1 output (/speckit.plan command)
-├── quickstart.md        # Phase 1 output (/speckit.plan command)
-├── contracts/           # Phase 1 output (/speckit.plan command)
-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
-```
+## Key Milestones
 
-### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
+| Milestone | Target Date | Status |
+|-----------|-------------|--------|
+| [Phase 1] | [YYYY-MM-DD] | Pending |
+| [Phase 2] | [YYYY-MM-DD] | Pending |
 
-```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+---
 
-tests/
-├── contract/
-├── integration/
-└── unit/
+## Success Metrics
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+- [ ] [Measurable success criterion aligned to objective]
+- [ ] [Measurable success criterion aligned to objective]
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
+---
 
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
+## Dependencies & Risks
 
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
-```
+### External Dependencies
+- [Dependency 1]
+- [Dependency 2]
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+### Risks
+| Risk | Impact | Mitigation |
+|------|--------|-----------|
+| [Risk description] | High/Medium/Low | [Mitigation approach] |
 
-## Complexity Tracking
+---
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+## Next Steps
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+1. [Action item]
+2. [Action item]
