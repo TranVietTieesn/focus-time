@@ -5,24 +5,40 @@
 @tailwind utilities;
 
 @layer base {
+  html, body, #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
   body {
-    @apply bg-slate-950 text-white;
     font-family: 'Inter', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 }
 
 @layer utilities {
-  /* Glass morphism effect - VTea UI Makeover */
+  /* Glass morphism effect - VTea UI Makeover (optional immersive card) */
   .glass-panel {
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.20);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Full-bleed immersive container override */
+  .immersive-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
   }
   
   /* Respect reduced motion preference */

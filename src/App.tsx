@@ -1,10 +1,8 @@
 import { useEffect, useState, lazy, Suspense } from 'react';
 import { useStore } from './store';
 import { BackgroundLayer } from './components/BackgroundLayer';
-import { InspirationalQuote } from './components/InspirationalQuote';
-import { TopBar } from './components/TopBar';
+import { BrandingHeader } from './components/BrandingHeader';
 import { FocusCard } from './components/FocusCard';
-import { DailyBar } from './components/DailyBar';
 
 // Lazy load heavy components for better performance
 const TaskDrawer = lazy(() => import('./components/tasks/TaskDrawer').then(m => ({ default: m.TaskDrawer })));
@@ -108,7 +106,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden">
       {/* Skip to main content link for accessibility */}
       <a
         href="#main-content"
@@ -117,35 +115,31 @@ function App() {
         Skip to main content
       </a>
 
+      {/* Full-bleed immersive background (z-0) */}
       <BackgroundLayer />
-      <InspirationalQuote />
-      <TopBar
-        onSettingsClick={() => setIsSettingsOpen(true)}
-        onTasksClick={handleTaskDrawerToggle}
-      />
-      
-      <div className="flex relative z-10">
-        {/* Task Drawer - Lazy loaded */}
-        <Suspense fallback={<div className="w-72 hidden md:block" />}>
-          <TaskDrawer
-            isOpen={isTaskDrawerOpen}
-            onClose={() => setIsTaskDrawerOpen(false)}
-          />
-        </Suspense>
 
-        {/* Main Content */}
-        <main 
-          id="main-content" 
-          className="flex-1 container mx-auto px-4 py-8 flex items-center justify-center min-h-[calc(100vh-8rem)]"
-          role="main"
-        >
-          <FocusCard />
-        </main>
-      </div>
+      {/* Minimalist header - VTea wordmark + rotating affirmation, fades during session (z-20) */}
+      <BrandingHeader />
 
-      <DailyBar />
+      {/* Main immersive content area - centered, full viewport (z-10) */}
+      {/* Top padding accounts for minimalist header (z-20) */}
+      <main
+        id="main-content"
+        className="fixed inset-0 flex flex-col items-center justify-center pt-20 md:pt-24 pb-0"
+        role="main"
+      >
+        <FocusCard />
+      </main>
 
-      {/* Settings Modal - Lazy loaded */}
+      {/* Task Drawer - overlay/side sheet (z-25) - Lazy loaded */}
+      <Suspense fallback={null}>
+        <TaskDrawer
+          isOpen={isTaskDrawerOpen}
+          onClose={() => setIsTaskDrawerOpen(false)}
+        />
+      </Suspense>
+
+      {/* Settings Modal - overlay (z-50) - Lazy loaded */}
       <Suspense fallback={null}>
         <SettingsModal
           isOpen={isSettingsOpen}
@@ -153,7 +147,7 @@ function App() {
         />
       </Suspense>
 
-      {/* Resume Session Prompt */}
+      {/* Resume Session Prompt - overlay (z-50) */}
       {showResumePrompt && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="glass-panel rounded-2xl p-6 max-w-md w-full">

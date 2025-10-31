@@ -1,6 +1,7 @@
 /**
- * FocusCard - Main timer card with glassmorphism effect
- * VTea UI Makeover: Action Controls Enhancement
+ * FocusCard - Main timer display (immersive centered layout)
+ * VTea UI Makeover: Glassmorphism-optional card in full-bleed viewport
+ * Visual Priority: PRIMARY (dominant visual anchor)
  */
 
 import { useEffect, useState } from 'react';
@@ -96,7 +97,9 @@ export function FocusCard() {
   }, [isFullscreen]);
 
   return (
-    <div className="w-full max-w-2xl glass-panel rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
+    <div className="w-full max-w-3xl glass-panel rounded-3xl p-8 md:p-12 lg:p-16 flex flex-col items-center">
+      {/* Inner container for breathing room */}
+      <div className="flex flex-col items-center w-full">
       {/* Focus Title - VTea UI Makeover */}
       <FocusTitle />
       
@@ -217,6 +220,7 @@ export function FocusCard() {
         {status === 'paused' && 'Timer paused'}
         {status === 'idle' && 'Timer ready to start'}
         {status === 'running' && remainingSec === 300 && '5 minutes remaining'}
+      </div>
       </div>
     </div>
   );

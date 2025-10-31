@@ -1,6 +1,7 @@
 /**
  * ModeSwitcher - Segmented control for session type selection
  * VTea UI Makeover: Pill-style buttons for Focus/Short Break/Long Break
+ * Visual Priority: SECONDARY (supporting element, below timer)
  */
 
 import { useStore } from '@/store';
@@ -96,11 +97,11 @@ export function ModeSwitcher() {
 
   return (
     <div 
-      className="flex justify-center mb-6"
+      className="flex justify-center mb-8 md:mb-12"
       role="group"
       aria-label="Session type selector"
     >
-      <div className="inline-flex" style={{ gap: '1px' }}>
+      <div className="inline-flex" style={{ gap: '2px' }}>
         <ModeButton mode="work" label="Focus" />
         <ModeButton mode="shortBreak" label="Short Break" />
         <ModeButton mode="longBreak" label="Long Break" />

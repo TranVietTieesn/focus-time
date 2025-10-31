@@ -1,6 +1,7 @@
 /**
  * FocusTitle - Inline editable session title component
- * VTea UI Makeover: Added pencil icon indicator for visual affordance
+ * VTea UI Makeover: Immersive centered text above timer
+ * Visual Priority: PRIMARY (readable session anchor)
  */
 
 import { useState, useEffect, useRef } from 'react';
@@ -59,7 +60,7 @@ export function FocusTitle() {
 
   return (
     <div 
-      className="text-center mb-4 relative"
+      className="text-center mb-6 md:mb-8 relative"
       onMouseEnter={() => setShowPencil(true)}
       onMouseLeave={() => setShowPencil(false)}
     >
