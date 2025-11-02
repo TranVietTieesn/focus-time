@@ -4,30 +4,32 @@
  * TimerDisplay, and ControlButtons - all centered with uniform spacing
  */
 
-import { useTimer } from '@/core/timer';
 import { BackgroundLayer } from './BackgroundLayer';
 import { Header } from './Header';
 import { ModeSwitcher } from './ModeSwitcher';
 import { EditableTaskTitle } from './EditableTaskTitle';
 import { TimerDisplay } from './TimerDisplay';
-import { PrimaryButton } from './PrimaryButton';
-import { SecondaryControls } from './SecondaryControls';
+import { UnifiedActionButton } from './UnifiedActionButton';
+import { FloatingAudioControls } from './FloatingAudioControls';
 
 export function FocusStage() {
 
   return (
     <div className="fixed inset-0 w-screen h-screen overflow-hidden" style={{ zIndex: 1 }}>
-      {/* Background layer */}
+      {/* Background layer - zIndex: 0 */}
       <BackgroundLayer />
 
-      {/* Header with branding and quote */}
+      {/* Header with branding and quote - zIndex: 20 */}
       <Header />
 
-      {/* Main centered content */}
+      {/* Floating Audio Controls - Bottom Left - zIndex: 50 */}
+      <FloatingAudioControls />
+
+      {/* Main centered content - zIndex: 30 (above background, below highest modals) */}
       <div
         className="fixed inset-0 flex flex-col items-center justify-center"
         role="main"
-        style={{ zIndex: 10 }}
+        style={{ zIndex: 30 }}
       >
         {/* Mode Switcher */}
         <div style={{ marginBottom: 'var(--space-20)' }}>
@@ -42,13 +44,10 @@ export function FocusStage() {
           <TimerDisplay />
         </div>
 
-        {/* Primary Action Button */}
+        {/* Unified Action Button (Start/Pause/Resume) + Controls */}
         <div style={{ marginBottom: 'var(--space-16)' }}>
-          <PrimaryButton />
+          <UnifiedActionButton />
         </div>
-
-        {/* Secondary Controls */}
-        <SecondaryControls />
       </div>
     </div>
   );

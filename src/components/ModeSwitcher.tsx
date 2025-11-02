@@ -1,6 +1,7 @@
 /**
- * ModeSwitcher - Session type selector
- * Segmented control: Work, Short Break, Long Break
+ * ModeSwitcher - Flocus-style segmented control
+ * Work / Short Break / Long Break selector
+ * Active = filled gradient, Inactive = outline, Hover = soft fill
  */
 
 import { useTimer, SessionType } from '@/core/timer';
@@ -31,34 +32,48 @@ export function ModeSwitcher() {
     label: string;
   }) => {
     const isActive = type === mode;
-    const baseClasses =
-      'min-h-[48px] px-8 py-3 font-semibold text-base text-white transition-all duration-300 focus-ring';
-
     const borderRadius =
       mode === 'work'
-        ? '999px 0 0 999px'
+        ? 'var(--radius-full) 0 0 var(--radius-full)'
         : mode === 'longBreak'
-          ? '0 999px 999px 0'
+          ? '0 var(--radius-full) var(--radius-full) 0'
           : '0';
 
-    const getButtonStyle = () => {
+    const getStyle = () => {
       if (isActive) {
         return {
-          background: 'var(--gradient-primary)',
-          boxShadow: 'var(--glow-button-primary)',
-          transform: 'translateY(-1px)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: 'linear-gradient(135deg, #5068d9 0%, #4157c9 100%)',
+          color: '#ffffff',
           border: 'none',
+          boxShadow: '0 4px 16px rgba(80, 123, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+          cursor: 'default',
         };
       }
       return {
-        background: 'rgba(255, 255, 255, 0.08)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: 'none',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+        background: 'transparent',
+        color: '#999999',
+        border: '1px solid #666666',
+        boxShadow: 'none',
+        cursor: isDisabled ? 'not-allowed' : 'pointer',
       };
+    };
+
+    const handleFocus = (e: React.FocusEvent<HTMLButtonElement>) => {
+      if (!isDisabled) {
+        if (isActive) {
+          e.currentTarget.style.boxShadow = '0 6px 20px rgba(80, 123, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
+        } else {
+          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(75, 107, 251, 0.3)';
+        }
+      }
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLButtonElement>) => {
+      if (isActive) {
+        e.currentTarget.style.boxShadow = '0 4px 16px rgba(80, 123, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
+      } else {
+        e.currentTarget.style.boxShadow = 'none';
+      }
     };
 
     return (
@@ -66,27 +81,26 @@ export function ModeSwitcher() {
         onClick={() => handleModeChange(mode)}
         disabled={isDisabled}
         aria-pressed={isActive}
-        className={baseClasses}
+        className="min-h-[48px] px-8 py-3 font-semibold text-base transition-all duration-200 focus-ring"
         style={{
           borderRadius,
-          ...getButtonStyle(),
+          ...getStyle(),
           opacity: isDisabled ? 0.5 : 1,
-          cursor: isDisabled ? 'not-allowed' : 'pointer',
         }}
         onMouseEnter={(e) => {
           if (!isDisabled && !isActive) {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-            e.currentTarget.style.transform = 'translateY(-1px)';
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.25)';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
+            e.currentTarget.style.borderColor = '#888888';
           }
         }}
         onMouseLeave={(e) => {
           if (!isDisabled && !isActive) {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.transform = 'none';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.borderColor = '#666666';
           }
         }}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       >
         {label}
       </button>
@@ -99,7 +113,16 @@ export function ModeSwitcher() {
       role="group"
       aria-label="Session type selector"
     >
-      <div className="inline-flex" style={{ gap: '2px' }}>
+      <div
+        className="inline-flex"
+        style={{
+          gap: '0',
+          padding: '4px',
+          background: 'rgba(255, 255, 255, 0.02)',
+          borderRadius: 'var(--radius-full)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+        }}
+      >
         <ModeButton mode="work" label="Focus" />
         <ModeButton mode="shortBreak" label="Short Break" />
         <ModeButton mode="longBreak" label="Long Break" />
