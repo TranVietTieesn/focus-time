@@ -1,92 +1,90 @@
 /**
- * ModeSwitcher - Segmented control for session type selection
- * VTea UI Makeover: Pill-style buttons for Focus/Short Break/Long Break
- * Visual Priority: SECONDARY (supporting element, below timer)
+ * ModeSwitcher - Session type selector
+ * Segmented control: Work, Short Break, Long Break
  */
 
-import { useStore } from '@/store';
-import { minutesToSeconds } from '@/lib/time';
+import { useTimer, SessionType } from '@/core/timer';
+
+const DEFAULT_DURATIONS = {
+  work: 25 * 60,
+  shortBreak: 5 * 60,
+  longBreak: 15 * 60,
+};
 
 export function ModeSwitcher() {
-  const type = useStore((state) => state.type);
-  const status = useStore((state) => state.status);
-  const start = useStore((state) => state.start);
-  const workMin = useStore((state) => state.workMin);
-  const shortBreakMin = useStore((state) => state.shortBreakMin);
-  const longBreakMin = useStore((state) => state.longBreakMin);
+  const type = useTimer((state) => state.type);
+  const status = useTimer((state) => state.status);
+  const start = useTimer((state) => state.start);
 
   const isDisabled = status === 'running';
 
-  const handleModeChange = (newType: 'work' | 'shortBreak' | 'longBreak') => {
+  const handleModeChange = (newType: SessionType) => {
     if (isDisabled || type === newType) return;
-    
-    const durations = {
-      work: workMin,
-      shortBreak: shortBreakMin,
-      longBreak: longBreakMin,
-    };
-    
-    start(newType, minutesToSeconds(durations[newType]));
+    start(newType, DEFAULT_DURATIONS[newType]);
   };
 
-  const getModeColor = (mode: 'work' | 'shortBreak' | 'longBreak') => {
-    if (mode === 'work') return '#4B6BFB';
-    if (mode === 'shortBreak') return '#FF89BB';
-    return '#10B981';
-  };
-
-  const ModeButton = ({ 
-    mode, 
-    label 
-  }: { 
-    mode: 'work' | 'shortBreak' | 'longBreak'; 
+  const ModeButton = ({
+    mode,
+    label,
+  }: {
+    mode: SessionType;
     label: string;
   }) => {
     const isActive = type === mode;
-    const baseClasses = "min-h-[44px] px-4 py-2 font-medium text-sm md:text-base transition-all duration-200 touch-manipulation";
-    
-    const activeStyle = {
-      backgroundColor: getModeColor(mode),
-      color: 'rgba(255, 255, 255, 1.0)',
-      border: 'none',
+    const baseClasses =
+      'min-h-[48px] px-8 py-3 font-semibold text-base text-white transition-all duration-300 focus-ring';
+
+    const borderRadius =
+      mode === 'work'
+        ? '999px 0 0 999px'
+        : mode === 'longBreak'
+          ? '0 999px 999px 0'
+          : '0';
+
+    const getButtonStyle = () => {
+      if (isActive) {
+        return {
+          background: 'var(--gradient-primary)',
+          boxShadow: 'var(--glow-button-primary)',
+          transform: 'translateY(-1px)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: 'none',
+        };
+      }
+      return {
+        background: 'rgba(255, 255, 255, 0.08)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: 'none',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+      };
     };
-    
-    const inactiveStyle = {
-      backgroundColor: 'transparent',
-      color: 'rgba(255, 255, 255, 0.7)',
-      border: '1px solid rgba(255, 255, 255, 0.3)',
-    };
-    
-    const hoverStyle = !isActive && !isDisabled ? {
-      backgroundColor: 'rgba(255, 255, 255, 0.05)',
-      borderColor: 'rgba(255, 255, 255, 0.4)',
-    } : {};
-    
-    const disabledStyle = isDisabled ? {
-      opacity: 0.5,
-      cursor: 'not-allowed',
-    } : {};
 
     return (
       <button
         onClick={() => handleModeChange(mode)}
         disabled={isDisabled}
         aria-pressed={isActive}
-        className={`${baseClasses} focus-ring`}
+        className={baseClasses}
         style={{
-          ...(isActive ? activeStyle : inactiveStyle),
-          ...disabledStyle,
-          borderRadius: mode === 'work' ? '999px 0 0 999px' : 
-                       mode === 'longBreak' ? '0 999px 999px 0' : '0',
+          borderRadius,
+          ...getButtonStyle(),
+          opacity: isDisabled ? 0.5 : 1,
+          cursor: isDisabled ? 'not-allowed' : 'pointer',
         }}
         onMouseEnter={(e) => {
-          if (!isActive && !isDisabled) {
-            Object.assign(e.currentTarget.style, hoverStyle);
+          if (!isDisabled && !isActive) {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.25)';
           }
         }}
         onMouseLeave={(e) => {
-          if (!isActive && !isDisabled) {
-            Object.assign(e.currentTarget.style, inactiveStyle);
+          if (!isDisabled && !isActive) {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+            e.currentTarget.style.transform = 'none';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
           }
         }}
       >
@@ -96,7 +94,7 @@ export function ModeSwitcher() {
   };
 
   return (
-    <div 
+    <div
       className="flex justify-center mb-8 md:mb-12"
       role="group"
       aria-label="Session type selector"
