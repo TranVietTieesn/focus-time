@@ -1,33 +1,29 @@
 /**
  * FloatingAudioControls - Bottom-left floating controls
- * Toggle ambient sound and completion notification sound
+ * Music panel toggle and completion notification sound
  * Always visible with opacity control - semi-transparent by default
  * Keyboard accessible (Tab + Enter)
  */
 
 import { useState, useEffect } from 'react';
+import { MusicPanel } from './MusicPanel';
 
 interface AudioState {
-  ambientEnabled: boolean;
   notificationEnabled: boolean;
 }
 
 export function FloatingAudioControls() {
   const [isHovering, setIsHovering] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isMusicPanelOpen, setIsMusicPanelOpen] = useState(false);
   const [audioState, setAudioState] = useState<AudioState>({
-    ambientEnabled: false,
     notificationEnabled: true,
   });
 
   const shouldHighlight = isHovering || isFocused;
 
-  const toggleAmbient = () => {
-    setAudioState((prev) => ({
-      ...prev,
-      ambientEnabled: !prev.ambientEnabled,
-    }));
-    // TODO: Connect to actual audio playback
+  const toggleMusicPanel = () => {
+    setIsMusicPanelOpen((prev) => !prev);
   };
 
   const toggleNotification = () => {
@@ -37,58 +33,69 @@ export function FloatingAudioControls() {
     }));
     // TODO: Connect to actual audio playback
   };
+
+  // Listen for keyboard shortcut M to toggle music panel
+  useEffect(() => {
+    const handleToggle = () => {
+      setIsMusicPanelOpen((prev) => !prev);
+    };
+    window.addEventListener('toggleMusicPanel', handleToggle);
+    return () => window.removeEventListener('toggleMusicPanel', handleToggle);
+  }, []);
+
   return (
-    <div
-      className="fixed bottom-6 left-6 flex flex-col items-center gap-2 transition-all duration-300"
-      style={{
-        opacity: shouldHighlight ? 1 : 0.5,
-        zIndex: 50,
-      }}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      {/* Ambient Sound Toggle */}
-      <button
-        onClick={toggleAmbient}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 focus-ring"
-        title={audioState.ambientEnabled ? 'Disable ambient sound' : 'Enable ambient sound'}
-        aria-label={audioState.ambientEnabled ? 'Ambient sound on' : 'Ambient sound off'}
+    <>
+      <div
+        className="fixed bottom-6 left-6 flex flex-col items-center gap-2 transition-all duration-300"
         style={{
-          background: audioState.ambientEnabled
-            ? 'linear-gradient(135deg, #7c3aed 0%, #ff89bb 100%)'
-            : 'rgba(255, 255, 255, 0.1)',
-          border: audioState.ambientEnabled ? 'none' : '1px solid rgba(255, 255, 255, 0.2)',
-          color: '#ffffff',
-          fontSize: '1.25rem',
-          cursor: 'pointer',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          boxShadow: shouldHighlight
-            ? audioState.ambientEnabled
-              ? '0 6px 20px rgba(124, 58, 237, 0.4)'
-              : '0 4px 16px rgba(255, 255, 255, 0.3)'
-            : audioState.ambientEnabled
-            ? '0 4px 12px rgba(124, 58, 237, 0.3)'
-            : '0 2px 8px rgba(0, 0, 0, 0.2)',
-          transition: 'all 0.2s ease-out',
+          opacity: shouldHighlight ? 1 : 0.5,
+          zIndex: 50,
         }}
-        onMouseEnter={(e) => {
-          if (!audioState.ambientEnabled) {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!audioState.ambientEnabled) {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-          }
-        }}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        {audioState.ambientEnabled ? '🎵' : '🔇'}
-      </button>
+        {/* Music Panel Toggle */}
+        <button
+          onClick={toggleMusicPanel}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 focus-ring"
+          title={isMusicPanelOpen ? 'Close music panel' : 'Open music panel'}
+          aria-label={isMusicPanelOpen ? 'Close music panel' : 'Open music panel'}
+          style={{
+            background: isMusicPanelOpen
+              ? 'linear-gradient(135deg, #7c3aed 0%, #ff89bb 100%)'
+              : 'rgba(255, 255, 255, 0.1)',
+            border: isMusicPanelOpen ? 'none' : '1px solid rgba(255, 255, 255, 0.2)',
+            color: '#ffffff',
+            fontSize: '1.25rem',
+            cursor: 'pointer',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            boxShadow: shouldHighlight
+              ? isMusicPanelOpen
+                ? '0 6px 20px rgba(124, 58, 237, 0.4)'
+                : '0 4px 16px rgba(255, 255, 255, 0.3)'
+              : isMusicPanelOpen
+              ? '0 4px 12px rgba(124, 58, 237, 0.3)'
+              : '0 2px 8px rgba(0, 0, 0, 0.2)',
+            transition: 'all 0.2s ease-out',
+          }}
+          onMouseEnter={(e) => {
+            if (!isMusicPanelOpen) {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isMusicPanelOpen) {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            }
+          }}
+        >
+          {isMusicPanelOpen ? '🎵' : '🎶'}
+        </button>
 
       {/* Notification Sound Toggle */}
       <button
@@ -132,6 +139,10 @@ export function FloatingAudioControls() {
       >
         {audioState.notificationEnabled ? '🔔' : '🔕'}
       </button>
-    </div>
+      </div>
+
+      {/* Music Panel */}
+      <MusicPanel isOpen={isMusicPanelOpen} onClose={() => setIsMusicPanelOpen(false)} />
+    </>
   );
 }

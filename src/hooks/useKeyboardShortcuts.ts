@@ -3,6 +3,8 @@
  * Space/Enter: Start/Pause/Resume
  * R: Restart with confirmation
  * F: Fullscreen
+ * M: Toggle music panel
+ * ↑/↓: Volume control (when music panel is open)
  * Esc: Exit fullscreen or dismiss dialogs
  */
 
@@ -91,6 +93,29 @@ export function useKeyboardShortcuts() {
             document.exitFullscreen().catch(() => {
               console.log('Exit fullscreen failed');
             });
+          }
+          break;
+        }
+
+        case 'KeyM': {
+          event.preventDefault();
+          // Dispatch custom event for music panel toggle
+          window.dispatchEvent(new CustomEvent('toggleMusicPanel'));
+          break;
+        }
+
+        case 'ArrowUp':
+        case 'ArrowDown': {
+          // Only handle volume if music panel is open
+          // Dispatch custom event, let MusicPanel decide if it should handle
+          const volumeChange = event.code === 'ArrowUp' ? 10 : -10;
+          const volumeEvent = new CustomEvent('musicVolumeChange', {
+            detail: { change: volumeChange },
+          });
+          const handled = window.dispatchEvent(volumeEvent);
+          if (!handled) {
+            // Event was prevented (music panel handled it)
+            event.preventDefault();
           }
           break;
         }
