@@ -99,13 +99,14 @@ export function EditableTaskTitle() {
 
   return (
     <h1
-      className="text-2xl font-semibold text-white cursor-pointer select-none transition-all duration-300 flex items-center gap-2"
+      className="text-2xl font-semibold text-white cursor-pointer select-none flex items-center gap-2"
       style={{
-        animation: 'slideUp 0.5s ease-in-out 0.1s backwards',
+        animation: 'slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.15s backwards',
         textShadow: 'var(--glow-text-sm)',
         marginBottom: 'var(--space-16)',
-        letterSpacing: '0.025em',
-        opacity: isHovering ? 1 : 1,
+        letterSpacing: '0.03em',
+        opacity: isHovering ? 0.9 : 0.7,
+        transition: 'opacity 0.3s ease-out',
       }}
       onMouseEnter={() => {
         if (status !== 'running') {

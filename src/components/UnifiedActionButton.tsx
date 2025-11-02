@@ -21,26 +21,29 @@ export function UnifiedActionButton() {
   const resetButtonRef = useRef<HTMLButtonElement>(null);
   const fullscreenButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Determine button label, gradient, and icon
+  // VTea button config with gradient morphing
   const getButtonConfig = () => {
     if (status === 'idle') {
       return {
         label: 'Start',
-        gradient: 'linear-gradient(135deg, #4b6bfb 0%, #3b5ceb 100%)',
-        glow: '0 8px 32px rgba(75, 107, 251, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        gradient: 'var(--gradient-primary)', // #4B6BFB → #805DFF
+        glow: 'var(--glow-button-primary)',
+        glowHover: 'var(--glow-button-primary-hover)',
       };
     }
     if (status === 'running') {
       return {
         label: 'Pause',
-        gradient: 'linear-gradient(135deg, #ff89bb 0%, #ff6ea0 100%)',
-        glow: '0 8px 32px rgba(255, 137, 187, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        gradient: 'linear-gradient(90deg, #ff89bb 0%, #ff6ea0 100%)',
+        glow: '0 8px 32px rgba(255, 137, 187, 0.4), 0 4px 16px rgba(255, 110, 160, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        glowHover: '0 12px 48px rgba(255, 137, 187, 0.6), 0 6px 24px rgba(255, 110, 160, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
       };
     }
     return {
       label: 'Resume',
-      gradient: 'linear-gradient(135deg, #7c3aed 0%, #ff89bb 100%)',
-      glow: '0 8px 32px rgba(124, 58, 237, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+      gradient: 'linear-gradient(90deg, #7c3aed 0%, #ff89bb 100%)',
+      glow: '0 8px 32px rgba(124, 58, 237, 0.4), 0 4px 16px rgba(255, 137, 187, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+      glowHover: '0 12px 48px rgba(124, 58, 237, 0.6), 0 6px 24px rgba(255, 137, 187, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
     };
   };
 
@@ -85,32 +88,41 @@ export function UnifiedActionButton() {
         animation: 'slideUp 0.5s ease-in-out 0.1s backwards',
       }}
     >
-      {/* Main Action Button */}
+      {/* Main Action Button - VTea style with morphing */}
       <button
         onClick={handleClick}
-        className="min-h-[56px] px-12 py-3 text-white font-bold text-lg focus-ring transition-all duration-300"
+        className="text-white focus-ring"
         style={{
-          borderRadius: '9999px',
+          minHeight: '56px',
+          padding: '16px 48px',
+          fontSize: '1.125rem',
+          fontWeight: 700,
+          borderRadius: '30px',
           background: config.gradient,
           boxShadow: config.glow,
           border: 'none',
           cursor: 'pointer',
-          transform: 'none',
+          transform: 'translateY(0)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          letterSpacing: '0.03em',
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = config.glow.replace('0.4', '0.5').replace('0.3', '0.4');
-          e.currentTarget.style.transform = 'translateY(-3px)';
+          e.currentTarget.style.boxShadow = config.glowHover;
+          e.currentTarget.style.transform = 'translateY(-4px)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.boxShadow = config.glow;
-          e.currentTarget.style.transform = 'none';
+          e.currentTarget.style.transform = 'translateY(0)';
         }}
         onMouseDown={(e) => {
           e.currentTarget.style.transform = 'translateY(-1px) scale(0.98)';
+          e.currentTarget.style.boxShadow = config.glow;
         }}
         onMouseUp={(e) => {
-          e.currentTarget.style.transform = 'translateY(-3px) scale(1)';
+          e.currentTarget.style.transform = 'translateY(-4px) scale(1)';
+          e.currentTarget.style.boxShadow = config.glowHover;
         }}
+        aria-label={`${config.label} timer`}
       >
         {config.label}
       </button>

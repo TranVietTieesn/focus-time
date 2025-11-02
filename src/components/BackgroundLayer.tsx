@@ -1,6 +1,6 @@
 /**
- * BackgroundLayer - Flocus aesthetic with light diffusion
- * Dynamic gradient with soft radial glow and breathing animation
+ * BackgroundLayer - VTea dark-purple gradient with neon accents
+ * Calm, elegant atmosphere with subtle animations
  */
 
 export function BackgroundLayer() {
@@ -9,16 +9,15 @@ export function BackgroundLayer() {
       className="fixed inset-0 w-screen h-screen overflow-hidden"
       style={{
         zIndex: 0,
-        animation: 'fadeIn 0.5s ease-in-out',
+        animation: 'fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
       }}
       aria-hidden="true"
     >
-      {/* Layer 1: Dynamic base gradient (3-color soft transition) */}
+      {/* Layer 1: VTea base gradient */}
       <div
         className="absolute inset-0"
         style={{
-          background: 'var(--gradient-bg-flocus-dynamic)',
-          animation: 'gradientShift 12s ease-in-out infinite',
+          background: 'var(--gradient-bg-vtea)',
         }}
       />
 

@@ -42,17 +42,17 @@ export function ModeSwitcher() {
     const getStyle = () => {
       if (isActive) {
         return {
-          background: 'linear-gradient(135deg, #5068d9 0%, #4157c9 100%)',
+          background: 'var(--gradient-mode-active)',
           color: '#ffffff',
           border: 'none',
-          boxShadow: '0 4px 16px rgba(80, 123, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+          boxShadow: 'var(--glow-mode-active)',
           cursor: 'default',
         };
       }
       return {
         background: 'transparent',
-        color: '#999999',
-        border: '1px solid #666666',
+        color: 'rgba(255, 255, 255, 0.5)',
+        border: '1px solid rgba(255, 255, 255, 0.15)',
         boxShadow: 'none',
         cursor: isDisabled ? 'not-allowed' : 'pointer',
       };
@@ -61,16 +61,16 @@ export function ModeSwitcher() {
     const handleFocus = (e: React.FocusEvent<HTMLButtonElement>) => {
       if (!isDisabled) {
         if (isActive) {
-          e.currentTarget.style.boxShadow = '0 6px 20px rgba(80, 123, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3)';
+          e.currentTarget.style.boxShadow = '0 0 25px rgba(75, 107, 251, 0.6), 0 0 50px rgba(128, 93, 255, 0.4)';
         } else {
-          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(75, 107, 251, 0.3)';
+          e.currentTarget.style.boxShadow = '0 0 0 2px rgba(128, 93, 255, 0.4)';
         }
       }
     };
 
     const handleBlur = (e: React.FocusEvent<HTMLButtonElement>) => {
       if (isActive) {
-        e.currentTarget.style.boxShadow = '0 4px 16px rgba(80, 123, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
+        e.currentTarget.style.boxShadow = 'var(--glow-mode-active)';
       } else {
         e.currentTarget.style.boxShadow = 'none';
       }
@@ -89,14 +89,16 @@ export function ModeSwitcher() {
         }}
         onMouseEnter={(e) => {
           if (!isDisabled && !isActive) {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-            e.currentTarget.style.borderColor = '#888888';
+            e.currentTarget.style.background = 'rgba(160, 120, 255, 0.1)';
+            e.currentTarget.style.borderColor = 'rgba(160, 120, 255, 0.3)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.8)';
           }
         }}
         onMouseLeave={(e) => {
           if (!isDisabled && !isActive) {
             e.currentTarget.style.background = 'transparent';
-            e.currentTarget.style.borderColor = '#666666';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.5)';
           }
         }}
         onFocus={handleFocus}
@@ -112,15 +114,19 @@ export function ModeSwitcher() {
       className="flex justify-center mb-8 md:mb-12"
       role="group"
       aria-label="Session type selector"
+      style={{
+        animation: 'slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards',
+      }}
     >
       <div
         className="inline-flex"
         style={{
           gap: '0',
           padding: '4px',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: 'rgba(0, 0, 0, 0.2)',
           borderRadius: 'var(--radius-full)',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(160, 120, 255, 0.1)',
+          backdropFilter: 'blur(8px)',
         }}
       >
         <ModeButton mode="work" label="Focus" />

@@ -10,15 +10,22 @@ import { getRandomQuote } from '@/lib/quotes';
 export function Header() {
   const [quote, setQuote] = useState<string>('');
   const status = useTimer((state) => state.status);
+  const lastEvent = useTimer((state) => state.lastEvent);
 
-  // Set random quote on mount
+  // Set random quote on mount and on each session start
   useEffect(() => {
     setQuote(getRandomQuote());
   }, []);
 
+  // Randomize quote when starting new session
+  useEffect(() => {
+    if (lastEvent?.type === 'started') {
+      setQuote(getRandomQuote());
+    }
+  }, [lastEvent]);
+
   // Opacity based on status: full when idle/paused, faded when running
-  const opacityClass =
-    status === 'running' ? 'opacity-20' : 'opacity-40';
+  const opacity = status === 'running' ? 0.3 : 0.6;
 
   return (
     <header
@@ -27,12 +34,19 @@ export function Header() {
       aria-label="Header"
     >
       {/* VTea Wordmark - Top Left */}
-      <div className="absolute left-0 top-0 p-6 pointer-events-none">
+      <div 
+        className="absolute left-0 top-0 p-6 pointer-events-none"
+        style={{
+          animation: 'fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s backwards',
+        }}
+      >
         <div
-          className={`text-xl font-bold text-white transition-opacity duration-500 ${opacityClass}`}
+          className="text-xl font-bold text-white"
           style={{
             textShadow: 'var(--glow-text-sm)',
             letterSpacing: '0.05em',
+            opacity,
+            transition: 'opacity 0.5s ease-out',
           }}
         >
           VTea
@@ -40,12 +54,19 @@ export function Header() {
       </div>
 
       {/* Inspirational Quote - Top Right */}
-      <div className="absolute right-0 top-0 p-6 max-w-xs pointer-events-none">
+      <div 
+        className="absolute right-0 top-0 p-6 max-w-sm pointer-events-none"
+        style={{
+          animation: 'fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s backwards',
+        }}
+      >
         <p
-          className={`text-sm font-light text-white text-right transition-opacity duration-500 ${opacityClass}`}
+          className="text-sm font-light text-white text-right italic"
           style={{
-            textShadow: '0 0 5px rgba(255, 255, 255, 0.2)',
-            lineHeight: '1.4',
+            textShadow: 'var(--glow-quote)',
+            lineHeight: '1.5',
+            opacity,
+            transition: 'opacity 0.5s ease-out',
           }}
         >
           {quote}

@@ -200,54 +200,63 @@
   --animate-gradientShift: gradientShift 12s ease-in-out infinite;
 }
 
-/* Flocus Gradient Definitions */
+/* VTea Gradient Definitions */
 :root {
-  /* Background gradients - cinematic */
-  --gradient-bg-cinematic: linear-gradient(
+  /* Main background: dark-purple gradient with neon accents */
+  --gradient-bg-vtea: linear-gradient(
     135deg,
-    #0a0e27 0%,
-    #1a1527 25%,
-    #251640 50%,
-    #2d1b4e 75%,
-    #1a0f2e 100%
+    #0f0a1e 0%,
+    #1a0f2e 25%,
+    #2d1650 50%,
+    #1e1242 75%,
+    #130a28 100%
   );
 
-  /* Dynamic Flocus gradient - soft, breathing transition */
-  --gradient-bg-flocus-dynamic: linear-gradient(
-    135deg,
-    #0f172e 0%,
-    #1a1640 30%,
-    #251e4e 60%,
-    #1a1035 100%
-  );
-
-  /* Primary action gradient */
-  --gradient-primary: linear-gradient(135deg, #4b6bfb 0%, #3b5ceb 100%);
+  /* Primary action gradient: blue → violet */
+  --gradient-primary: linear-gradient(90deg, #4b6bfb 0%, #805dff 100%);
 
   /* Secondary gradient */
   --gradient-secondary: linear-gradient(135deg, #ff89bb 0%, #ff6ea0 100%);
 
   /* Accent gradient - purple to pink */
   --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #ff89bb 100%);
+
+  /* Mode selector active glow */
+  --gradient-mode-active: linear-gradient(135deg, #4b6bfb 0%, #805dff 100%);
 }
 
-/* Glow Effects */
+/* VTea Glow Effects */
 :root {
-  /* Text glow - soft white */
-  --glow-text-sm: 0 0 10px rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(255, 255, 255, 0.2);
-  --glow-text-md: 0 0 20px rgba(255, 255, 255, 0.4),
-    0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.2);
-  --glow-text-lg: 0 0 30px rgba(255, 255, 255, 0.5),
-    0 0 60px rgba(255, 255, 255, 0.4), 0 0 120px rgba(255, 255, 255, 0.3);
+  /* Timer text glow - violet tint */
+  --glow-timer-base: 0 0 15px rgba(160, 120, 255, 0.3),
+    0 0 30px rgba(160, 120, 255, 0.2);
+  --glow-timer-pulsating: 0 0 20px rgba(160, 120, 255, 0.6),
+    0 0 40px rgba(160, 120, 255, 0.4),
+    0 0 60px rgba(160, 120, 255, 0.3);
+  --glow-timer-dim: 0 0 10px rgba(160, 120, 255, 0.2),
+    0 0 20px rgba(160, 120, 255, 0.1);
 
-  /* Button glow - blue */
+  /* Text glow - soft white with violet */
+  --glow-text-sm: 0 0 10px rgba(255, 255, 255, 0.3),
+    0 0 20px rgba(160, 120, 255, 0.2);
+  --glow-text-md: 0 0 20px rgba(255, 255, 255, 0.4),
+    0 0 40px rgba(160, 120, 255, 0.3);
+  --glow-quote: 0 0 10px rgba(160, 120, 255, 0.4),
+    0 0 15px rgba(160, 120, 255, 0.2);
+
+  /* Button glow - gradient shimmer */
   --glow-button-primary: 0 8px 32px rgba(75, 107, 251, 0.4),
+    0 4px 16px rgba(128, 93, 255, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  --glow-button-primary-hover: 0 12px 40px rgba(75, 107, 251, 0.5),
+  --glow-button-primary-hover: 0 12px 48px rgba(75, 107, 251, 0.6),
+    0 6px 24px rgba(128, 93, 255, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 
-  /* Button glow - secondary (pink) */
-  --glow-button-secondary: 0 8px 32px rgba(255, 137, 187, 0.3);
-  --glow-button-secondary-hover: 0 12px 40px rgba(255, 137, 187, 0.4);
+  /* Mode selector glow */
+  --glow-mode-active: 0 0 20px rgba(75, 107, 251, 0.5),
+    0 0 40px rgba(128, 93, 255, 0.3);
+
+  /* Music player border glow */
+  --glow-music-playing: 0 0 20px rgba(128, 93, 255, 0.6),
+    0 0 40px rgba(128, 93, 255, 0.4);
 }
