@@ -5,8 +5,9 @@
  * Keyboard accessible (Tab + Enter)
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MusicPanel } from './MusicPanel';
+import { FloatingMusicPlayer } from './FloatingMusicPlayer';
 
 interface AudioState {
   notificationEnabled: boolean;
@@ -16,9 +17,12 @@ export function FloatingAudioControls() {
   const [isHovering, setIsHovering] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isMusicPanelOpen, setIsMusicPanelOpen] = useState(false);
+  const [currentSong, setCurrentSong] = useState<{ videoId: string; title: string } | null>(null);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [audioState, setAudioState] = useState<AudioState>({
     notificationEnabled: true,
   });
+  const togglePlayPauseRef = useRef<(() => void) | null>(null);
 
   const shouldHighlight = isHovering || isFocused;
 
@@ -142,7 +146,25 @@ export function FloatingAudioControls() {
       </div>
 
       {/* Music Panel */}
-      <MusicPanel isOpen={isMusicPanelOpen} onClose={() => setIsMusicPanelOpen(false)} />
+      <MusicPanel 
+        isOpen={isMusicPanelOpen} 
+        onClose={() => setIsMusicPanelOpen(false)}
+        onSongChange={setCurrentSong}
+        onPlayStateChange={setIsMusicPlaying}
+      />
+
+      {/* Floating Music Player - Show when song is playing and panel closed */}
+      {currentSong && !isMusicPanelOpen && (
+        <FloatingMusicPlayer
+          songTitle={currentSong.title}
+          isPlaying={isMusicPlaying}
+          onTogglePlay={() => {
+            // Dispatch event to toggle play/pause
+            window.dispatchEvent(new CustomEvent('toggleMusicPlayback'));
+          }}
+          onOpenPanel={() => setIsMusicPanelOpen(true)}
+        />
+      )}
     </>
   );
 }

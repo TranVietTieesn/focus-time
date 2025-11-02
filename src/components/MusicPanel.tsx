@@ -17,15 +17,18 @@ interface YouTubeSearchResult {
 interface MusicPanelProps {
   isOpen: boolean;
   onClose: () => void;
+  onSongChange?: (songInfo: { videoId: string; title: string } | null) => void;
+  onPlayStateChange?: (isPlaying: boolean) => void;
 }
 
-export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
+export function MusicPanel({ isOpen, onClose, onSongChange, onPlayStateChange }: MusicPanelProps) {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [results, setResults] = useState<YouTubeSearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [selectedSongTitle, setSelectedSongTitle] = useState<string>('');
   const [hasInteracted, setHasInteracted] = useState(false);
   const [playerInitialized, setPlayerInitialized] = useState(false);
 
@@ -45,13 +48,15 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
     onReady: () => {
       setPlayerInitialized(true);
     },
-    onStateChange: (state) => {
+            onStateChange: (state) => {
       // Announce state changes for accessibility
-      if (state === 1) {
+      const playing = state === 1;
+      if (playing) {
         announceToScreenReader('Music playing');
       } else if (state === 2) {
         announceToScreenReader('Music paused');
       }
+      onPlayStateChange?.(playing);
     },
   });
 
@@ -60,18 +65,32 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
     setVolume(volume + change);
   }, [volume, setVolume]);
 
-  const handleSelectVideo = useCallback((videoId: string) => {
+  const handleSelectVideo = useCallback((videoId: string, title: string) => {
     setSelectedVideo(videoId);
+    setSelectedSongTitle(title);
     setHasInteracted(true);
-    cueVideo(videoId);
-  }, [cueVideo]);
+    
+    // Wait a bit for player to be ready before cueing
+    setTimeout(() => {
+      cueVideo(videoId);
+    }, 100);
+    
+    onSongChange?.({ videoId, title });
+  }, [cueVideo, onSongChange]);
 
   const handlePlayPause = useCallback(() => {
     if (!hasInteracted) {
       setHasInteracted(true);
     }
     togglePlayPause();
-  }, [hasInteracted, togglePlayPause]);
+    
+    // Auto-close panel after starting playback
+    if (!isPlaying) {
+      setTimeout(() => {
+        onClose();
+      }, 500);
+    }
+  }, [hasInteracted, togglePlayPause, isPlaying, onClose]);
 
   const announceToScreenReader = (message: string) => {
     const announcement = document.createElement('div');
@@ -89,13 +108,9 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 100);
-    } else {
-      // Stop player when panel closes
-      stop();
-      setSelectedVideo(null);
-      setHasInteracted(false);
     }
-  }, [isOpen, stop]);
+    // Don't stop player when panel closes - keep playing in background
+  }, [isOpen]);
 
   // Listen for volume change keyboard shortcuts (↑/↓)
   useEffect(() => {
@@ -110,6 +125,15 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
     window.addEventListener('musicVolumeChange', handleVolumeEvent);
     return () => window.removeEventListener('musicVolumeChange', handleVolumeEvent);
   }, [isOpen, handleVolumeChange]);
+
+  // Listen for toggle playback from floating player
+  useEffect(() => {
+    const handleTogglePlayback = () => {
+      togglePlayPause();
+    };
+    window.addEventListener('toggleMusicPlayback', handleTogglePlayback);
+    return () => window.removeEventListener('toggleMusicPlayback', handleTogglePlayback);
+  }, [togglePlayPause]);
 
   // Debounce search query
   useEffect(() => {
@@ -185,14 +209,25 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
       });
   }, [debouncedQuery]);
 
-  if (!isOpen) return null;
+  // Keep player alive even when panel closed (hidden)
+  const isPanelVisible = isOpen;
 
   return (
-    <div
-      className="fixed inset-0 flex items-center justify-center"
-      style={{ zIndex: 100 }}
-      onClick={onClose}
-    >
+    <>
+      {/* Hidden player container - keeps YouTube player alive when panel closed */}
+      <div style={{ position: 'fixed', left: '-9999px', top: '-9999px', pointerEvents: 'none' }}>
+        <div
+          id={playerContainerId}
+          style={{ width: '640px', height: '360px' }}
+        />
+      </div>
+
+      {isPanelVisible && (
+        <div
+          className="fixed inset-0 flex items-center justify-center"
+          style={{ zIndex: 100 }}
+          onClick={onClose}
+        >
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/30 backdrop-blur-sm"
@@ -262,10 +297,10 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
               {results.map((result) => (
                 <button
                   key={result.videoId}
-                  onClick={() => handleSelectVideo(result.videoId)}
+                  onClick={() => handleSelectVideo(result.videoId, result.title)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      handleSelectVideo(result.videoId);
+                      handleSelectVideo(result.videoId, result.title);
                     }
                   }}
                   className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors text-left"
@@ -296,16 +331,15 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
           )}
         </div>
 
-        {/* Mini Player - Always show when panel open */}
+        {/* Mini Player - Visual preview only (actual player is hidden offscreen) */}
         <div className="p-4 border-t border-white/10">
-          {/* Player container - always rendered when panel open for YouTube API */}
-          <div className="mb-3" style={{ display: selectedVideo ? 'block' : 'none' }}>
-            <div
-              id={playerContainerId}
-              className="w-full rounded-lg overflow-hidden bg-black"
-              style={{ height: '200px' }}
-            />
-          </div>
+          {selectedVideo && (
+            <div className="mb-3">
+              <div className="w-full rounded-lg overflow-hidden bg-black/20 flex items-center justify-center" style={{ height: '200px' }}>
+                <div className="text-white/40 text-sm">Player active</div>
+              </div>
+            </div>
+          )}
 
           {!selectedVideo && (
             <div className="text-center text-white/60 py-8 text-sm">
@@ -358,6 +392,8 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
           )}
         </div>
       </div>
+      </div>
+      )}
 
       {/* Screen reader announcements */}
       <div
@@ -398,6 +434,6 @@ export function MusicPanel({ isOpen, onClose }: MusicPanelProps) {
           outline-offset: 2px;
         }
       `}</style>
-    </div>
+    </>
   );
 }
