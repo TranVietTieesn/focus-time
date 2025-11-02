@@ -1,62 +1,42 @@
 /* Fonts are loaded in index.html with preconnect and display=swap */
 
+@import './styles/tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html, body, #root {
+  html,
+  body,
+  #root {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
   }
-  
+
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: var(--font-family-base);
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-family-base);
   }
 }
 
 @layer utilities {
-  /* Glass morphism effect - VTea UI Makeover (optional immersive card) */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Full-bleed immersive container override */
-  .immersive-container {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
-  }
-  
-  /* Respect reduced motion preference */
-  @media (prefers-reduced-motion: reduce) {
-    .glass-panel {
-      @apply backdrop-blur-none bg-black/80;
-    }
-    
-    * {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-
   /* Focus visible states */
   .focus-ring {
-    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400;
   }
 
   /* Screen reader only */
@@ -72,45 +52,73 @@
     border-width: 0;
   }
 
-  /* Tabular numbers for timer */
-  .tabular-nums {
-    font-variant-numeric: tabular-nums;
+  /* Flocus Glow Utilities */
+  .glow-text-sm {
+    text-shadow: var(--glow-text-sm);
   }
 
-  /* T109: Pulse animation for restart confirmation */
-  @keyframes pulse-brief {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.6;
-    }
-    100% {
-      opacity: 1;
-    }
+  .glow-text-md {
+    text-shadow: var(--glow-text-md);
   }
 
-  /* Action button animation on click */
-  .action-button.activated {
-    animation: pulse-brief 200ms ease-in-out;
+  .glow-text-lg {
+    text-shadow: var(--glow-text-lg);
   }
 
-  /* T303 & T307: Hover and active states with prefers-reduced-motion support */
-  .action-button {
-    transition: all 150ms ease-out;
+  /* Gradient Utilities */
+  .gradient-primary {
+    background: var(--gradient-primary);
   }
 
-  .action-button:hover {
-    transform: scale(1.05);
+  .gradient-secondary {
+    background: var(--gradient-secondary);
   }
 
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  /* Glow Shadow Utilities */
+  .shadow-glow-primary {
+    box-shadow: var(--glow-button-primary);
+  }
+
+  .shadow-glow-primary-hover {
+    box-shadow: var(--glow-button-primary-hover);
+  }
+
+  /* Frosted glass effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .glass:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Pill shape utility */
+  .pill {
+    border-radius: 9999px;
+  }
+
+  /* Enhanced transitions - keep all under 400ms for motion sensitivity */
+  * {
+    transition-duration: var(--transition-base);
+  }
+
+  /* Respect reduced motion preference - disable animations */
   @media (prefers-reduced-motion: reduce) {
-    .action-button {
-      transition: none;
-    }
-
-    .action-button:hover {
-      transform: none;
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }

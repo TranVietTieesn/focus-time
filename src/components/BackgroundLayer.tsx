@@ -1,45 +1,67 @@
 /**
- * BackgroundLayer - Cinematic deep gradient with vignette effect
- * Flocus-inspired: Midnight blue → violet → soft magenta blend
- * Visual Priority: TERTIARY (atmospheric foundation)
+ * BackgroundLayer - Flocus aesthetic with light diffusion
+ * Dynamic gradient with soft radial glow and breathing animation
  */
 
 export function BackgroundLayer() {
   return (
-    <div className="fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
-      {/* Deep Cinematic Gradient Base (midnight blue → violet → magenta) */}
+    <div
+      className="fixed inset-0 w-screen h-screen overflow-hidden"
+      style={{
+        zIndex: 0,
+        animation: 'fadeIn 0.5s ease-in-out',
+      }}
+      aria-hidden="true"
+    >
+      {/* Layer 1: Dynamic base gradient (3-color soft transition) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'var(--gradient-bg-flocus-dynamic)',
+          animation: 'gradientShift 12s ease-in-out infinite',
+        }}
+      />
+
+      {/* Layer 2: Light diffusion - radial glow from center */}
       <div
         className="absolute inset-0"
         style={{
           background: `
-            radial-gradient(ellipse at 20% 20%, rgba(147, 51, 234, 0.3) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 80%, rgba(219, 39, 119, 0.2) 0%, transparent 50%),
-            linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #581c87 75%, #7c2d12 100%)
+            radial-gradient(
+              ellipse 900px 700px at 50% 50%,
+              rgba(75, 107, 251, 0.25) 0%,
+              rgba(139, 92, 246, 0.15) 30%,
+              rgba(255, 137, 187, 0.08) 50%,
+              transparent 75%
+            )
+          `,
+          animation: 'breathe 4s ease-in-out infinite',
+        }}
+      />
+
+      {/* Layer 3: Soft vignette (dark edges, bright center) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(
+              ellipse at center,
+              rgba(0, 0, 0, 0) 0%,
+              rgba(0, 0, 0, 0.2) 40%,
+              rgba(0, 0, 0, 0.5) 75%,
+              rgba(0, 0, 0, 0.7) 100%
+            )
           `,
         }}
       />
-      
-      {/* Optional Progressive WebP Image (≤80KB, loads after gradient) */}
-      {/* Uncomment when background image is added to /public/images/
-      <picture>
-        <source srcSet="/images/background.webp" type="image/webp" />
-        <img 
-          src="/images/background.jpg" 
-          alt="" 
-          loading="lazy" 
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-      </picture>
-      */}
-      
-      {/* Cinematic Vignette + Text Contrast Overlay */}
+
+      {/* Layer 4: Gaussian blur effect */}
       <div
         className="absolute inset-0"
         style={{
-          background: `
-            radial-gradient(ellipse at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%),
-            radial-gradient(circle at 50% 40%, transparent 30%, rgba(0, 0, 0, 0.4) 70%)
-          `,
+          background: 'transparent',
+          backdropFilter: 'blur(0.5px)',
+          WebkitBackdropFilter: 'blur(0.5px)',
         }}
       />
     </div>
